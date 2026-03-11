@@ -1,0 +1,14 @@
+{
+  "name": "storyflow-plugins",
+  "owner": {
+    "name": "WeDevelop"
+  },
+  "plugins": [
+    {
+      "name": "storyflow",
+      "source": "./storyflow",
+      "description": "StoryFlow integration for Software Architects: browse briefings, claim work, and generate implementation plans",
+      "version": "1.0.0"
+    }
+  ]
+}
