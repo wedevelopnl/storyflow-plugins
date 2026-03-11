@@ -1,0 +1,9 @@
+{
+  "storyflow": {
+    "type": "streamable-http",
+    "url": "https://api.storyflowhq.com/_mcp",
+    "headers": {
+      "Authorization": "Bearer ${STORYFLOW_PAT}"
+    }
+  }
+}

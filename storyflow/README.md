@@ -2,19 +2,43 @@
 
 Brings StoryFlow's briefing context directly into the local Claude Code development environment, so Software Architects can browse briefings, claim work, and generate implementation plans without leaving their terminal.
 
-## Prerequisites
+## Installation
 
-- A running StoryFlow instance with MCP endpoint enabled
-- A Personal Access Token (PAT) for authentication
-- Environment variables: `STORYFLOW_URL` and `STORYFLOW_PAT`
+### 1. Add the marketplace
 
-When used within the StoryFlow monorepo, the root `.mcp.json` already configures the MCP server.
+```
+/plugin marketplace add wedevelopnl/storyflow-plugins
+```
 
-## Setup
+### 2. Install the plugin
 
-1. Install the plugin in your project
-2. Run `/storyflow:setup` to link your project to a StoryFlow customer and asset
-3. Start a new session to see the StoryFlow context reminder
+```
+/plugin install storyflow@storyflow-plugins
+```
+
+### 3. Create a Personal Access Token
+
+Log in to [StoryFlow](https://app.storyflowhq.com/profile) and create a PAT under **Access Tokens**.
+
+### 4. Set the environment variable
+
+Add to your shell profile (`~/.zshrc`, `~/.bashrc`, etc.):
+
+```bash
+export STORYFLOW_PAT="sf_pat_your_token_here"
+```
+
+Then restart your terminal or run `source ~/.zshrc`.
+
+### 5. Configure your project
+
+Start Claude Code in your project directory and run:
+
+```
+/storyflow:setup
+```
+
+This links the current codebase to a specific customer and asset in StoryFlow.
 
 ## Commands
 

@@ -10,10 +10,15 @@ Configure the StoryFlow plugin for this project by linking it to a customer and 
 
 ## Process
 
-1. **Test MCP connection**: Call `mcp__storyflow__list-briefings` to verify the StoryFlow MCP server is reachable. If it fails, inform the user they need to:
-   - Ensure StoryFlow is running
-   - Set `STORYFLOW_PAT` environment variable with a valid Personal Access Token
-   - Check that `.mcp.json` has the storyflow server configured
+1. **Test MCP connection**: Call `mcp__storyflow__list-briefings` to verify the StoryFlow MCP server is reachable. If it fails, guide the user through these steps:
+
+   **a)** Check that `STORYFLOW_PAT` is set as an environment variable. They need to:
+   - Log in to https://app.storyflowhq.com/profile
+   - Create a Personal Access Token under "Access Tokens"
+   - Add `export STORYFLOW_PAT="sf_pat_..."` to their shell profile (`~/.zshrc` or `~/.bashrc`)
+   - Restart their terminal and Claude Code session
+
+   **b)** If the env var is set but connection still fails, check that the plugin's MCP server is loaded. Run `/mcp` to verify the "storyflow" server appears.
 
 2. **Identify customer**: From the briefings response, extract the available customers. Ask the user which customer this project belongs to. Show customer names and IDs.
 
@@ -34,6 +39,6 @@ This project is linked to <customer_name>'s <asset_name> asset in StoryFlow.
 When browsing briefings, filter by this customer. When creating plans, use this asset context.
 ```
 
-5. **Verify .gitignore**: Read the project's `.gitignore` and check that `.claude/*.local.md` is listed. If not, append it.
+5. **Verify .gitignore**: Read the project's `.gitignore` and check that `.claude/*.local.md` is listed. If not, suggest adding it (the config contains project-specific IDs that should not be committed).
 
 6. **Confirm**: Tell the user setup is complete. Suggest starting a new session to see the SessionStart context, and using `/storyflow:briefings` to see available work.
