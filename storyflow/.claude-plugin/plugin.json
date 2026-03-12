@@ -5,5 +5,8 @@
   "author": {
     "name": "WeDevelop",
     "url": "https://wedevelop.nl"
-  }
+  },
+  "repository": "https://github.com/wedevelopnl/storyflow-plugins",
+  "license": "MIT",
+  "keywords": ["storyflow", "briefings", "agency", "implementation-plans", "project-management"]
 }
