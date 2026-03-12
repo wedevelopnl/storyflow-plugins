@@ -23,11 +23,11 @@ Direct the user to the `/storyflow:update-docs` command:
 
 ## Prerequisites
 
-The project must be linked to a StoryFlow asset via `/storyflow:setup` (which creates `.claude/storyflow.local.md` with the `asset_id`).
+The project must be linked to a StoryFlow asset via `/storyflow:setup` (which creates `.storyflow/config.json` with the `asset_id`).
 
 ## How It Works
 
-1. The command reads the asset ID from `.claude/storyflow.local.md`
+1. The command reads the asset ID from `.storyflow/config.json`
 2. It fetches the generation prompt from the ai-service (same prompts used by the web UI)
 3. Claude Code analyzes the codebase locally (no repo clone needed)
 4. The generated documentation is saved to StoryFlow via MCP tools

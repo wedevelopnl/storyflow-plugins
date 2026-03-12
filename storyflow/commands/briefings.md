@@ -10,7 +10,7 @@ Show available briefings from StoryFlow, highlighting work ready to be claimed.
 
 ## Process
 
-1. **Load config**: Read `.claude/storyflow.local.md` to get the `customer_id`. If the file doesn't exist, tell the user to run `/storyflow:setup` first.
+1. **Load config**: Read `.storyflow/config.json` to get the `customer_id` from `project.customer_id`. If the file doesn't exist, tell the user to run `/storyflow:setup` first.
 
 2. **Fetch briefings**: Call `mcp__storyflow__list-briefings`. If a customer_id is available from config, mention it in the context so results are relevant.
 

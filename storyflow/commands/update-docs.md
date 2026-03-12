@@ -19,9 +19,9 @@ Examples:
 
 ## Process
 
-1. **Read config**: Read `.claude/storyflow.local.md` to get the `asset_id`.
+1. **Read config**: Read `.storyflow/config.json` to get the `asset_id`.
    - If the file does not exist or has no `asset_id`, tell the user to run `/storyflow:setup` first and stop.
-   - Extract `asset_id` and `asset_name` from the YAML frontmatter.
+   - Extract `asset_id` and `asset_name` from `project.asset_id` and `project.asset_name` in the JSON config.
 
 2. **Get commit hash**: Run `git rev-parse HEAD` via Bash to get the current commit hash.
 
