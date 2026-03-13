@@ -1,7 +1,7 @@
 ---
 name: storyflow-setup
 description: Configure StoryFlow plugin for the current project. Links this project to a specific customer and asset in StoryFlow.
-allowed-tools: mcp__storyflow__list-briefings, mcp__storyflow__list-stories, Read, Write, Glob, AskUserQuestion, Bash
+allowed-tools: mcp__storyflow__get-current-user, mcp__storyflow__find-asset-by-repository-url, mcp__storyflow__list-assets, Read, Write, Glob, AskUserQuestion, Bash(git remote get-url origin)
 ---
 
 # StoryFlow Setup
@@ -10,7 +10,7 @@ Configure the StoryFlow plugin for this project by linking it to a customer and 
 
 ## Process
 
-1. **Test MCP connection**: Call `mcp__storyflow__list-briefings` to verify the StoryFlow MCP server is reachable. If it fails, guide the user through these steps:
+1. **Verify connection**: Call `get-current-user` to verify MCP connection and authentication. If it fails, guide the user:
 
    **a)** Check that `STORYFLOW_PAT` is set as an environment variable. They need to:
    - Log in to https://app.storyflowhq.com/profile
@@ -20,9 +20,14 @@ Configure the StoryFlow plugin for this project by linking it to a customer and 
 
    **b)** If the env var is set but connection still fails, check that the plugin's MCP server is loaded. Run `/mcp` to verify the "storyflow" server appears.
 
-2. **Identify customer**: From the briefings response, extract the available customers. Ask the user which customer this project belongs to. Show customer names and IDs.
+   On success, greet the user by name (from the response) and confirm the connection works.
 
-3. **Identify asset**: Ask the user which asset (application/project) this codebase represents. If unsure, suggest they check StoryFlow's asset management.
+2. **Auto-detect asset**: Run `git remote get-url origin` to get the repository URL. Then call `find-asset-by-repository-url` with that URL.
+
+   - **If a match is found**: Show the asset name, customer, and type. Ask the user to confirm this is correct.
+   - **If no match**: Fall back to step 3.
+
+3. **Manual asset selection** (only if auto-detect failed or user rejected the match): Call `list-assets` and present the available assets. Ask the user which asset this codebase represents. If none match, suggest they add the asset in StoryFlow first with the correct repository URL.
 
 4. **Create config file**: Create the `.storyflow/` directory if it doesn't exist, then write `.storyflow/config.json`:
 
@@ -30,10 +35,10 @@ Configure the StoryFlow plugin for this project by linking it to a customer and 
 {
   "version": 1,
   "project": {
-    "customer_id": "<selected-customer-uuid>",
-    "customer_name": "<selected-customer-name>",
-    "asset_id": "<selected-asset-uuid>",
-    "asset_name": "<selected-asset-name>"
+    "customer_id": "<customer-uuid>",
+    "customer_name": "<customer-name>",
+    "asset_id": "<asset-uuid>",
+    "asset_name": "<asset-name>"
   }
 }
 ```
