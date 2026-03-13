@@ -59,6 +59,7 @@ This links the current codebase to a specific customer and asset in StoryFlow.
 | `/storyflow:briefings` | List available briefings for your customer |
 | `/storyflow:briefing <id>` | Load full briefing context (description, documents, stories) |
 | `/storyflow:claim-briefing <id>` | Claim an approved briefing for implementation |
+| `/storyflow:briefing-to-stories <id>` | Generate user stories from an accepted briefing |
 | `/storyflow:implement-briefing <id>` | Generate an implementation plan from briefing and stories |
 | `/storyflow:story <id>` | Load individual story details |
 | `/storyflow:complete-story <id>` | Mark an in-progress story as complete |
@@ -71,6 +72,7 @@ Skills are loaded automatically when relevant context is detected:
 
 - **storyflow-workflow**: Triggers on briefing/story lifecycle questions. Provides knowledge about statuses, transitions, and roles.
 - **briefing-to-plan**: Triggers when converting briefings to implementation plans. Guides story sequencing and plan structure.
+- **generate-stories**: Triggers when generating user stories from briefings. Covers story format, complexity sizing, priority assessment, and acceptance criteria.
 - **asset-documentation**: Triggers when generating or updating asset documentation. Guides the documentation workflow.
 
 ## Agents
