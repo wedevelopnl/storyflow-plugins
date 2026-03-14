@@ -28,21 +28,17 @@ Connect Claude Code to the StoryFlow platform so Software Architects can browse 
 /plugin install storyflow@storyflow-plugins
 ```
 
-### 3. Create a Personal Access Token
+### 3. Authenticate with StoryFlow
 
-Log in to [StoryFlow](https://app.storyflowhq.com/profile) and create a token under **Profile > Access Tokens**.
+Run the following command to authenticate via your browser:
 
-### 4. Set the environment variable
-
-Add to your shell profile (`~/.zshrc`, `~/.bashrc`, etc.):
-
-```bash
-export STORYFLOW_PAT="sf_pat_your_token_here"
+```
+claude mcp auth storyflow
 ```
 
-Then restart your terminal or run `source ~/.zshrc`.
+This opens your browser where you sign in to StoryFlow. Once approved, Claude Code stores the credentials automatically.
 
-### 5. Configure your project
+### 4. Configure your project
 
 Start Claude Code in your project directory and run:
 
@@ -51,6 +47,31 @@ Start Claude Code in your project directory and run:
 ```
 
 This links the current codebase to a specific customer and asset in StoryFlow.
+
+### Alternative: Personal Access Token (PAT)
+
+For non-interactive scenarios (CI/CD, scripts), you can use a Personal Access Token instead of OAuth:
+
+1. Log in to [StoryFlow](https://app.storyflowhq.com/profile) and create a token under **Profile > Access Tokens**
+2. Set the environment variable in your shell profile:
+
+```bash
+export STORYFLOW_PAT="sf_pat_your_token_here"
+```
+
+3. Update `.mcp.json` in the plugin to include the token header:
+
+```json
+{
+  "storyflow": {
+    "type": "http",
+    "url": "https://api.storyflowhq.com/_mcp",
+    "headers": {
+      "Authorization": "Bearer ${STORYFLOW_PAT}"
+    }
+  }
+}
+```
 
 ## Commands
 
@@ -92,4 +113,4 @@ A typical session for a Software Architect:
 
 ## How it works
 
-The plugin uses MCP (Model Context Protocol) to connect to the StoryFlow API. Authentication is handled via the `STORYFLOW_PAT` environment variable, which is passed as a bearer token with every request. All communication goes through the MCP server bundled with the plugin.
+The plugin uses MCP (Model Context Protocol) to connect to the StoryFlow API. Authentication is handled via OAuth 2.1: Claude Code automatically manages the token lifecycle through the standard MCP OAuth flow. All communication goes through the MCP server bundled with the plugin.

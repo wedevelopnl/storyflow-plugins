@@ -1,7 +1,7 @@
 ---
 name: storyflow-update-docs
 description: Generate or update asset documentation (functional/technical) from the current codebase and save it to StoryFlow.
-allowed-tools: mcp__storyflow__get-asset-documentation, mcp__storyflow__save-asset-documentation, mcp__storyflow__get-documentation-prompt, mcp__storyflow__list-assets, Read, Glob, Grep, Bash, Agent, AskUserQuestion
+allowed-tools: mcp__storyflow__get-asset-documentation, mcp__storyflow__update-asset-documentation, mcp__storyflow__get-asset-documentation-prompt, mcp__storyflow__list-assets, Read, Glob, Grep, Bash, Agent, AskUserQuestion
 ---
 
 # Update Asset Documentation
@@ -32,7 +32,7 @@ Examples:
    a. **Check existing docs**: Call `mcp__storyflow__get-asset-documentation` with the asset ID and type.
       - Note the existing content and last commit hash (if any) for context.
 
-   b. **Get generation prompt**: Call `mcp__storyflow__get-documentation-prompt` with the type.
+   b. **Get generation prompt**: Call `mcp__storyflow__get-asset-documentation-prompt` with the type.
       - This returns the same prompt instructions the ai-service uses internally.
 
    c. **Generate documentation**: Using the prompt instructions from step (b), analyze the codebase thoroughly:
@@ -42,7 +42,7 @@ Examples:
       - Follow the prompt instructions to produce comprehensive markdown documentation
       - If existing documentation was found in step (a), use it as a reference for what to update/improve
 
-   d. **Save documentation**: Call `mcp__storyflow__save-asset-documentation` with:
+   d. **Save documentation**: Call `mcp__storyflow__update-asset-documentation` with:
       - `assetId`: from the config
       - `type`: the documentation type
       - `content`: the generated markdown
