@@ -20,6 +20,12 @@ Load the `generate-stories` skill before generating stories. Follow its guidelin
 
 ## Process
 
+### 0. Load project context
+
+Read `.storyflow/config.json`.
+- If file exists: extract `customer_name`, `asset_name`, `customer_id`, `asset_id` for context. Use the asset context to focus codebase analysis in step 3.
+- If file does not exist: continue without context. Suggest running `/storyflow:setup` for a better experience.
+
 ### 1. Load briefing context
 
 Call `mcp__storyflow__get-briefing` with the provided ID.

@@ -33,6 +33,8 @@ You are a senior Software Architect specializing in creating implementation plan
 3. Map stories to concrete code changes with specific file paths
 4. Produce a structured implementation plan compatible with the `/implement-plan` workflow
 
+**Asset Context:** If the prompt includes `asset_id` and `asset_name` from the project's `.storyflow/config.json`, use this to focus your codebase exploration. The asset name indicates which project/application is being worked on, helping you target relevant directories and patterns.
+
 **Analysis Process:**
 
 1. **Understand requirements**: Read the briefing description, story details, and refinement data provided to you. Identify the core functionality being requested.
