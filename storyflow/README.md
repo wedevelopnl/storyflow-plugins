@@ -68,12 +68,13 @@ Skills are loaded automatically when relevant context is detected:
 
 - **storyflow-workflow**: Triggers on briefing/story lifecycle questions. Provides knowledge about statuses, transitions, and roles.
 - **briefing-to-plan**: Triggers when converting briefings to implementation plans. Guides story sequencing and plan structure.
-- **generate-stories**: Triggers when generating user stories from briefings. Covers story format, complexity sizing, priority assessment, and acceptance criteria.
+- **write-story**: Triggers when writing user stories. Covers story format, language guardrails, acceptance criteria, complexity sizing, and priority assessment.
 - **asset-documentation**: Triggers when generating or updating asset documentation. Guides the documentation workflow.
 
 ## Agents
 
 - **briefing-planner**: Dedicated agent that explores the local codebase and generates an implementation plan from briefing data. Invoked automatically by `/storyflow:implement-briefing`. Uses Opus for plan quality.
+- **codebase-analyzer**: Analyzes a codebase from a functional perspective to support story generation. Explores the current project to understand what the application offers and which workflows will be affected by the briefing.
 
 ## Workflow
 
