@@ -19,13 +19,13 @@ Connect Claude Code to the StoryFlow platform so Software Architects can browse 
 ### 1. Add the marketplace
 
 ```
-/plugin marketplace add wedevelopnl/storyflow-plugins
+/plugin marketplace add wedevelopnl/storyflow-marketplace
 ```
 
 ### 2. Install the plugin
 
 ```
-/plugin install storyflow@storyflow-plugins
+/plugin install storyflow@storyflow-marketplace
 ```
 
 ### 3. Authenticate with StoryFlow
@@ -47,31 +47,6 @@ Start Claude Code in your project directory and run:
 ```
 
 This links the current codebase to a specific customer and asset in StoryFlow.
-
-### Alternative: Personal Access Token (PAT)
-
-For non-interactive scenarios (CI/CD, scripts), you can use a Personal Access Token instead of OAuth:
-
-1. Log in to [StoryFlow](https://app.storyflowhq.com/profile) and create a token under **Profile > Access Tokens**
-2. Set the environment variable in your shell profile:
-
-```bash
-export STORYFLOW_PAT="sf_pat_your_token_here"
-```
-
-3. Update `.mcp.json` in the plugin to include the token header:
-
-```json
-{
-  "storyflow": {
-    "type": "http",
-    "url": "https://api.storyflowhq.com/_mcp",
-    "headers": {
-      "Authorization": "Bearer ${STORYFLOW_PAT}"
-    }
-  }
-}
-```
 
 ## Commands
 

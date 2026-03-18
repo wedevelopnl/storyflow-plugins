@@ -18,14 +18,7 @@ Configure the StoryFlow plugin for this project by linking it to a customer and 
    ```
    This opens their browser to sign in to StoryFlow. Once approved, credentials are stored automatically.
 
-   **b)** If OAuth authentication fails, they can use a Personal Access Token as fallback:
-   - Log in to https://app.storyflowhq.com/profile
-   - Create a Personal Access Token under "Access Tokens"
-   - Add `export STORYFLOW_PAT="sf_pat_..."` to their shell profile (`~/.zshrc` or `~/.bashrc`)
-   - Update the plugin's `.mcp.json` to include `"headers": { "Authorization": "Bearer ${STORYFLOW_PAT}" }`
-   - Restart their terminal and Claude Code session
-
-   **c)** If the env var is set but connection still fails, check that the plugin's MCP server is loaded. Run `/mcp` to verify the "storyflow" server appears.
+   **b)** If connection still fails, check that the plugin's MCP server is loaded. Run `/mcp` to verify the "storyflow" server appears.
 
    On success, greet the user by name (from the response) and confirm the connection works.
 
