@@ -1,0 +1,23 @@
+{
+  "name": "storyflow-marketplace",
+  "owner": {
+    "name": "WeDevelop",
+    "url": "https://wedevelop.nl"
+  },
+  "metadata": {
+    "description": "StoryFlow plugins for Claude Code: AI-assisted software development as a service",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "storyflow",
+      "source": ".",
+      "description": "Browse briefings, claim work, and generate implementation plans from client requirements",
+      "version": "1.5.0",
+      "author": {
+        "name": "WeDevelop",
+        "url": "https://wedevelop.nl"
+      }
+    }
+  ]
+}
