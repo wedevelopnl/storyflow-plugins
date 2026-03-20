@@ -146,7 +146,17 @@ Report each result as it comes back. If a story fails to save, continue with the
 
 **Note:** Epic grouping is shown in the plan for context but is not persisted in this version. Complexity is shown for the architect's benefit but is not stored (set during refinement phase).
 
-### 7. Report results
+### 7. Transition briefing to Scoped
+
+After all stories are created, transition the briefing from Accepted to Scoped:
+
+Call `mcp__storyflow__transition-briefing` with:
+- `briefingId`: the briefing ID
+- `action`: `scope`
+
+This signals that scoping is complete and the briefing is ready for refinement.
+
+### 8. Report results
 
 ```
 Stories created:
@@ -157,6 +167,7 @@ Stories created:
 [if any failed: "Failed: [title] - [error message]"]
 
 Total: [X] stories created for briefing [key].
+Briefing transitioned to Scoped.
 
 Next steps:
 - Use `/storyflow:briefing <id>` to review the briefing with its new stories

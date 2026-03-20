@@ -25,7 +25,7 @@ Draft -> Submitted -> Accepted -> Scoped -> Refined -> Quoted -> QuoteOffered ->
 | Draft | Customer is writing the briefing | Customer |
 | Submitted | Customer submitted for agency review | Customer |
 | Accepted | Agency accepted the briefing for scoping | Agency PO |
-| Scoped | AI has analyzed and created draft stories | System |
+| Scoped | Stories created, scoping confirmed by agency | Agency PO |
 | Refined | Stories have been refined with details | Agency PO |
 | Quoted | Stories have been priced by the agency | Agency PO/Finance |
 | QuoteOffered | Quote sent to customer for approval | Agency PO |
@@ -36,6 +36,7 @@ Draft -> Submitted -> Accepted -> Scoped -> Refined -> Quoted -> QuoteOffered ->
 
 ### Key Transitions for Software Architects
 
+- **Accepted -> Scoped**: Transition via `mcp__storyflow__transition-briefing` with action `scope`. Requires at least one story. The `/storyflow:briefing-to-stories` command does this automatically after creating stories.
 - **Approved -> InProgress**: Claim a briefing via `mcp__storyflow__claim-briefing`. This assigns the architect to the briefing.
 - Only **Approved** briefings can be claimed.
 - Claiming transitions the briefing to InProgress automatically.
