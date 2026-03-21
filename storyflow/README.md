@@ -59,6 +59,8 @@ This links the current codebase to a specific customer and asset in StoryFlow.
 | `/storyflow:implement-briefing <id>` | Generate an implementation plan from briefing and stories |
 | `/storyflow:story <id>` | Load individual story details |
 | `/storyflow:complete-story <id>` | Mark an in-progress story as complete |
+| `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
+| `/storyflow:refine-briefing <id>` | Refine all stories of a briefing with multi-agent analysis |
 | `/storyflow:update-docs [type]` | Generate or update asset documentation (`functional`, `technical`, or `both`) |
 | `/storyflow:setup` | Configure plugin for the current project |
 
@@ -66,15 +68,22 @@ This links the current codebase to a specific customer and asset in StoryFlow.
 
 Skills are loaded automatically when relevant context is detected:
 
-- **storyflow-workflow**: Triggers on briefing/story lifecycle questions. Provides knowledge about statuses, transitions, and roles.
+- **storyflow-workflow**: Triggers on briefing/story lifecycle questions. Provides knowledge about statuses, transitions, roles, and refinement.
 - **briefing-to-plan**: Triggers when converting briefings to implementation plans. Guides story sequencing and plan structure.
 - **write-story**: Triggers when writing user stories. Covers story format, language guardrails, acceptance criteria, complexity sizing, and priority assessment.
+- **refinement-output**: Defines the output structure for story refinement analysis (complexity, risk, report, concerns).
 - **asset-documentation**: Triggers when generating or updating asset documentation. Guides the documentation workflow.
 
 ## Agents
 
 - **briefing-planner**: Dedicated agent that explores the local codebase and generates an implementation plan from briefing data. Invoked automatically by `/storyflow:implement-briefing`. Uses Opus for plan quality.
 - **codebase-analyzer**: Analyzes a codebase from a functional perspective to support story generation. Explores the current project to understand what the application offers and which workflows will be affected by the briefing.
+- **refinement-lead**: Orchestrates story refinement by triaging which specialists are needed, dispatching them in parallel, and synthesizing results into a final refinement analysis.
+- **refinement-backend**: Backend specialist analyzing API design, data models, domain logic, and database impact.
+- **refinement-frontend**: Frontend specialist analyzing UI components, state management, forms, and UX patterns.
+- **refinement-devops**: DevOps specialist analyzing migrations, configuration, deployment, and monitoring.
+- **refinement-qa**: QA specialist analyzing testability, edge cases, regression impact, and test coverage.
+- **refinement-security**: Security specialist analyzing authorization, multi-tenancy isolation, and data protection.
 
 ## Workflow
 
