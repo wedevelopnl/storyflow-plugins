@@ -52,8 +52,8 @@ This links the current codebase to a specific customer and asset in StoryFlow.
 
 | Command | Description |
 |---------|-------------|
-| `/storyflow:briefings` | List available briefings for your customer |
-| `/storyflow:briefing <id>` | Load full briefing context (description, documents, stories) |
+| `/storyflow:briefings` | List briefings for the configured asset, grouped by status |
+| `/storyflow:briefing <id>` | Smart briefing dashboard with status-aware next steps |
 | `/storyflow:claim-briefing <id>` | Claim an approved briefing for implementation |
 | `/storyflow:briefing-to-stories <id>` | Generate user stories from an accepted briefing |
 | `/storyflow:implement-briefing <id>` | Generate an implementation plan from briefing and stories |
