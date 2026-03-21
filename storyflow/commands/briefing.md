@@ -1,12 +1,12 @@
 ---
 name: storyflow-briefing
 description: Load full context for a specific briefing, including its stories, documents, and conversation.
-allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__get-story, Read
+allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__add-briefing-comment, Read
 ---
 
 # Load Briefing Context
 
-Fetch and display complete context for a specific briefing.
+Fetch and display a briefing as a smart dashboard: full context with status-aware next steps.
 
 ## Arguments
 
@@ -20,31 +20,66 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
    - If file exists: extract `customer_name`, `asset_name`, `customer_id`, `asset_id` for context.
    - If file does not exist: continue without context. Suggest running `/storyflow:setup` for a better experience.
 
-2. **Fetch briefing**: Call `mcp__storyflow__get-briefing` with the provided ID.
+2. **Fetch briefing and stories in parallel**:
+   - Call `mcp__storyflow__get-briefing` with the provided ID.
+   - Call `mcp__storyflow__get-briefing-stories` with the briefing ID.
 
-3. **Fetch stories**: Call `mcp__storyflow__get-briefing-stories` with the briefing ID.
+   Do NOT call `get-story` for individual stories. The stories list already contains status, priority, price, complexity, and risk. Use `/storyflow:story <key>` when the user wants to dive into a specific story.
 
-4. **Load story details**: For each story returned, call `mcp__storyflow__get-story` to get full details including refinement data. Run these calls in parallel where possible.
+3. **Display briefing dashboard**:
 
-5. **Display briefing overview** (if config was loaded and the briefing's asset does not match `asset_name` from config, show a warning: "Note: this briefing belongs to asset [briefing asset], not the configured asset [asset_name]."):
+   If config was loaded and the briefing's asset does not match `asset_name` from config, show a warning:
+   "Note: this briefing belongs to asset [briefing asset], not the configured asset [asset_name]."
+
    ```
-   # Briefing: [Title]
-   Status: [status] | Customer: [customer] | Asset: [asset]
+   # Briefing: [Key] - [Title]
+   Status: [status] | Customer: [customer] | Asset: [asset] | Project: [project]
+   Architect: [assigned name or "unassigned"] | Created: [date] | Updated: [date]
 
-   ## Description
-   [briefing description/requirements]
-
-   ## Documents
-   [list any attached documents with types]
+   ## Briefing Document
+   [Show the full briefing document content as returned by get-briefing.
+    This is the functional specification from the Virtual PO chat,
+    not a list of file attachments.]
 
    ## Stories ([count])
-   For each story:
-   - [Story Title] (status) - [brief description]
-     Complexity: [complexity] | Priority: [priority]
-     [If refinement data exists: show acceptance criteria summary]
+
+   | # | Story | Status | Priority | Price | Complexity | Risk |
+   |---|-------|--------|----------|-------|------------|------|
+   | [key] | [title] | [status] | [priority] | [price or -] | [complexity or -] | [risk or -] |
+
+   ## Next Steps
+   [Status-aware guidance, see below]
    ```
 
-6. **Suggest next steps** based on briefing status:
-   - **Approved**: "This briefing is ready to claim. Use `/storyflow:claim-briefing <id>` to claim it, or `/storyflow:implement-briefing <id>` to generate an implementation plan."
-   - **InProgress**: "This briefing is being implemented. Use `/storyflow:story <id>` to dive into individual stories, or `/storyflow:implement-briefing <id>` to generate a plan."
-   - **Other**: Describe what needs to happen next in the workflow.
+4. **Status-aware next steps**:
+
+   - **Draft**: "This briefing is still being drafted. The customer is working with the Virtual PO to finalize requirements."
+
+   - **Submitted**: "This briefing has been submitted by the customer and is awaiting review and acceptance."
+
+   - **Accepted**: "This briefing has been accepted and needs to be scoped into stories. Use `/storyflow:briefing-to-stories [id]` to generate stories."
+
+   - **Scoped**: "Stories have been created. Next step is to refine them. Use `/storyflow:refine-briefing [id]` to run multi-agent refinement on all stories."
+
+   - **Refined**: "All stories have been refined. Next step is to price the individual stories and then finalize pricing to move the briefing to **priced** status."
+     - List unpriced stories if any: "Unpriced stories: [keys]"
+     - "Use `/storyflow:story <key>` to view story details."
+
+   - **Priced**: "All stories are priced. The briefing is ready to be approved by the customer. After approval, a Software Architect can claim it."
+
+   - **Approved**: "This briefing is approved and ready to be claimed."
+     - "Claim this briefing: `/storyflow:claim-briefing [id]`"
+     - "Generate an implementation plan: `/storyflow:implement-briefing [id]`"
+
+   - **InProgress**: "This briefing is in progress, assigned to [architect name]."
+     - "View a story: `/storyflow:story <key>`"
+     - "Generate/update implementation plan: `/storyflow:implement-briefing [id]`"
+     - "Mark a story as done: `/storyflow:complete-story <key>`"
+
+   - **Done**: "This briefing has been completed."
+
+   - **Cancelled**: "This briefing has been cancelled."
+
+   - **Archived**: "This briefing has been archived."
+
+   Always end with: "Use `/storyflow:story <key>` to dive into a specific story's full details, acceptance criteria, and refinement analysis."
