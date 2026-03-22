@@ -15,97 +15,83 @@ Provides lifecycle, status, and transition knowledge for StoryFlow's briefing an
 - **Asset**: A customer's application/project linked to a Git repository.
 - **Refinement**: Multi-agent technical analysis of a story, producing complexity, risk, report, and concerns.
 
-## Briefing Lifecycle
+## Discovering Transitions
+
+Transitions are **self-describing** via MCP responses. You do not need to memorize status flows.
+
+- `mcp__storyflow__get-briefing` and `mcp__storyflow__get-story` responses include an "Available transitions" section listing what you can do next, with labels, target statuses, and required data fields.
+- `mcp__storyflow__list-briefings` and `mcp__storyflow__list-stories` show available transition names per item.
+- `mcp__storyflow__transition-briefing` and `mcp__storyflow__transition-story` accept a transition name and optional data JSON. On error, the response tells you why it failed and what alternatives are available.
+
+**Example flow:**
+1. Call `get-briefing` to see the current status and available transitions
+2. Pick a transition from the available list
+3. Call `transition-briefing` with the transition name (and required data if listed)
+4. On error: read the structured error message for guidance
+
+## Briefing Lifecycle Overview
 
 ```
-Draft -> Submitted -> Accepted -> Scoped -> Refined -> Quoted -> QuoteOffered -> Approved -> InProgress -> Done -> Archived
+Draft -> Submitted -> Accepted -> Scoped -> Refined -> Priced -> Approved -> InProgress -> Done -> Archived
 ```
 
-| Status | Description | Who acts |
-|--------|-------------|----------|
-| Draft | Customer is writing the briefing | Customer |
-| Submitted | Customer submitted for agency review | Customer |
-| Accepted | Agency accepted the briefing for scoping | Agency PO |
-| Scoped | Stories created, scoping confirmed by agency | Agency PO |
-| Refined | Stories have been refined with technical analysis | Software Architect |
-| Quoted | Stories have been priced by the agency | Agency PO/Finance |
-| QuoteOffered | Quote sent to customer for approval | Agency PO |
-| Approved | Customer approved the quote, ready for implementation | Customer |
-| InProgress | A Software Architect is implementing the stories | Software Architect |
-| Done | All stories completed | System |
-| Archived | Briefing archived after completion | Agency |
+Backward transitions exist (e.g., return-to-draft, return-to-scoped). Cancellation is available from most statuses. Use `get-briefing` to see exactly which transitions are available for a specific briefing.
 
-### Key Transitions for Software Architects
+### Key Actions for Software Architects
 
-- **Accepted -> Scoped**: Transition via `mcp__storyflow__transition-briefing` with action `scope`. Requires at least one story. The `/storyflow:briefing-to-stories` command does this automatically after creating stories.
-- **Scoped -> Refined**: Transition via `mcp__storyflow__transition-briefing` with action `refine`. Requires all stories to have refinement data. Use `/storyflow:refine-briefing` to refine all stories first.
-- **Approved -> InProgress**: Claim a briefing via `mcp__storyflow__claim-briefing`. This assigns the architect to the briefing.
-- Only **Approved** briefings can be claimed.
-- Claiming transitions the briefing to InProgress automatically.
+- **Claim a briefing**: Use `transition-briefing` with transition `claim` on an Approved briefing. This assigns you and moves the briefing to InProgress.
+- **Create stories**: Use `/storyflow:briefing-to-stories` after a briefing is Accepted.
+- **Refine stories**: Use `/storyflow:refine-briefing` when stories are in Scoped status.
+- **Complete a briefing**: Use `transition-briefing` with transition `complete` when all stories are done.
 
-## Story Lifecycle
+## Story Lifecycle Overview
 
+Feature stories follow:
 ```
-Draft -> Review -> Quoted -> Accepted -> InProgress -> Done -> Invoiced
+Draft -> InReview -> Refined -> Quoted -> ToDo -> InProgress -> Done -> Invoiced
 ```
 
-| Status | Description | Who acts |
-|--------|-------------|----------|
-| Draft | Story created (usually from briefing scoping) | System/Agency PO |
-| Review | Story under review, ready for refinement | Agency PO / Software Architect |
-| Quoted | Story has been priced | Agency PO/Finance |
-| Accepted | Customer accepted the story quote | Customer |
-| InProgress | Being implemented by a Software Architect | Software Architect |
-| Done | Implementation complete | Software Architect |
-| Invoiced | Billed to customer | Agency Finance |
+Incident stories follow a separate lifecycle:
+```
+Open -> Acknowledged -> Investigating -> InProgress -> Resolved -> Closed -> Invoiced
+```
 
-### Key Transitions for Software Architects
-
-- **Draft -> Review**: Story moves to review for refinement analysis
-- **Review -> Refined**: After refinement analysis is saved, transition via `mcp__storyflow__transition-story` with action `complete-refinement`
-- **Accepted -> InProgress**: Start working on a story (usually happens when briefing is claimed)
-- **InProgress -> Done**: Mark story as complete via `mcp__storyflow__transition-story` with action `complete`
+Use `get-story` to see exactly which transitions are available for a specific story.
 
 ### Story Refinement
 
-Stories in `Review` status can be refined using multi-agent analysis. The refinement process:
+Stories in `InReview` status can be refined using multi-agent analysis:
 
-1. Run `/storyflow:refine-story <id>` for a single story, or `/storyflow:refine-briefing <id>` for all stories in a briefing
-2. The refinement-lead agent explores the codebase and dispatches specialist agents (backend, frontend, security, QA, devops)
-3. Specialists analyze the story from their perspective and report complexity, risk, and concerns
-4. The lead agent synthesizes results and saves via `mcp__storyflow__refine-story`
-5. Transition the story with `complete-refinement` when satisfied with the analysis
+1. Run `/storyflow:refine-story <id>` for a single story, or `/storyflow:refine-briefing <id>` for all stories
+2. The refinement-lead agent explores the codebase and dispatches specialist agents
+3. Save refinement data via `mcp__storyflow__refine-story`
+4. Transition with `complete-refinement` when satisfied
 
-Refinement data includes:
-- **Complexity**: `low`, `medium`, `high`, or `very_high`
-- **Risk**: `low`, `medium`, or `high`
-- **Report**: Markdown analysis covering implementation considerations and dependencies
-- **Concerns**: Structured list of issues with severity (`critical`, `warning`, `info`), theme, and description
+Refinement data: complexity (`low`/`medium`/`high`/`very_high`), risk (`low`/`medium`/`high`), report (markdown), concerns (structured list with severity/theme/description).
 
 ## Briefing-Story Relationship
 
-- A briefing contains one or more stories (1:N relationship)
-- A briefing always has exactly one asset (1:1 relationship)
-- Stories are generated during the Scoped phase, refined during Refined phase
+- A briefing contains one or more stories (1:N)
+- A briefing always has exactly one asset (1:1)
+- Stories are generated during Accepted->Scoped phase, refined during Scoped->Refined phase
 - Each story has its own price, complexity, and implementation details
-- Stories within a briefing can be implemented in any order unless dependencies exist
 
 ## MCP Tools Reference
 
 | Tool | Purpose |
 |------|---------|
-| `mcp__storyflow__list-briefings` | List briefings (filterable by customer) |
-| `mcp__storyflow__get-briefing` | Get full briefing details |
+| `mcp__storyflow__list-briefings` | List briefings (filterable by status, customer, asset) |
+| `mcp__storyflow__get-briefing` | Get full briefing details with available transitions |
 | `mcp__storyflow__get-briefing-stories` | Get stories belonging to a briefing |
-| `mcp__storyflow__claim-briefing` | Claim an Approved briefing (transitions to InProgress) |
-| `mcp__storyflow__transition-briefing` | Transition briefing status |
+| `mcp__storyflow__transition-briefing` | Transition briefing status (includes claim, cancel, archive) |
 | `mcp__storyflow__add-briefing-comment` | Add a comment to a briefing |
-| `mcp__storyflow__list-stories` | List stories (filterable) |
-| `mcp__storyflow__get-story` | Get full story details with refinement data |
-| `mcp__storyflow__refine-story` | Save refinement analysis for a story (complexity, risk, report, concerns) |
+| `mcp__storyflow__list-stories` | List stories (filterable) with available transitions |
+| `mcp__storyflow__get-story` | Get full story details with refinement data and available transitions |
+| `mcp__storyflow__refine-story` | Save refinement analysis for a story |
 | `mcp__storyflow__transition-story` | Transition story status |
 | `mcp__storyflow__add-story-comment` | Add a comment to a story |
-| `mcp__storyflow__get-epic` | Get epic details (story grouping) |
+| `mcp__storyflow__create-story` | Create a single story linked to a briefing |
+| `mcp__storyflow__get-epic` | Get epic details |
 | `mcp__storyflow__list-epics` | List epics |
 
 ## Commands Reference
@@ -120,16 +106,17 @@ Refinement data includes:
 | `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
 | `/storyflow:refine-briefing <id>` | Refine all stories of a briefing |
 | `/storyflow:implement-briefing <id>` | Generate an implementation plan |
-| `/storyflow:update-docs <id>` | Update asset documentation |
+| `/storyflow:complete-story <id>` | Mark a story as done |
+| `/storyflow:update-docs` | Update asset documentation |
 
 ## Value-Based Pricing
 
-StoryFlow sells value, not hours. Customers see what they get and what it costs. Estimated hours exist internally but must never be exposed to customers. When creating implementation plans, focus on deliverables and scope, not time estimates.
+StoryFlow sells value, not hours. Customers see what they get and what it costs. Estimated hours exist internally but must never be exposed to customers.
 
 ## Workflow Tips
 
-- Load briefing context before starting implementation: use `mcp__storyflow__get-briefing` + `mcp__storyflow__get-briefing-stories`
-- Load individual story details via `mcp__storyflow__get-story` for refinement data (complexity, risk, report, concerns)
-- Use `/storyflow:refine-briefing` after stories are scoped to run refinement on all stories at once
+- Load briefing context before starting: `get-briefing` + `get-briefing-stories`
+- Load individual story details via `get-story` for refinement data and available transitions
+- Use `/storyflow:refine-briefing` after stories are scoped to run refinement on all stories
 - Add comments to briefings/stories to track progress and communicate with the team
 - When completing a story, add a completion note as an internal comment before transitioning
