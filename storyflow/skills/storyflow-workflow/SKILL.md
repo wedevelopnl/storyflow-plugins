@@ -120,7 +120,6 @@ Refinement data includes:
 | `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
 | `/storyflow:refine-briefing <id>` | Refine all stories of a briefing |
 | `/storyflow:implement-briefing <id>` | Generate an implementation plan |
-| `/storyflow:complete-story <id>` | Mark a story as done |
 | `/storyflow:update-docs <id>` | Update asset documentation |
 
 ## Value-Based Pricing

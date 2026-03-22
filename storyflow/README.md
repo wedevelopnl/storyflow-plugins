@@ -58,7 +58,6 @@ This links the current codebase to a specific customer and asset in StoryFlow.
 | `/storyflow:briefing-to-stories <id>` | Generate user stories from an accepted briefing |
 | `/storyflow:implement-briefing <id>` | Generate an implementation plan from briefing and stories |
 | `/storyflow:story <id>` | Load individual story details |
-| `/storyflow:complete-story <id>` | Mark an in-progress story as complete |
 | `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
 | `/storyflow:refine-briefing <id>` | Refine all stories of a briefing with multi-agent analysis |
 | `/storyflow:update-docs [type]` | Generate or update asset documentation (`functional`, `technical`, or `both`) |
@@ -94,7 +93,7 @@ A typical session for a Software Architect:
 3. `/storyflow:claim-briefing <id>` to claim it
 4. `/storyflow:implement-briefing <id>` to generate an implementation plan
 5. `/implement-plan` to execute the plan (requires superpowers plugin)
-6. `/storyflow:complete-story <id>` to mark stories as done
+6. Mark stories as done via the `transition-story` MCP tool
 
 ## How it works
 

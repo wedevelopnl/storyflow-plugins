@@ -50,4 +50,4 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
    - Next steps:
      - "Review the plan at `docs/plans/<filename>.md`"
      - "Use `/implement-plan` to execute the plan phase by phase"
-     - "Use `/storyflow:complete-story <key>` to mark stories as done when implemented"
+     - "To mark stories as done, use the `transition-story` MCP tool with transition `complete`"

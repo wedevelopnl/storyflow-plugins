@@ -61,7 +61,7 @@ If no ID is provided, ask the user for one. Suggest loading a briefing first wit
 
    - **ToDo**: "This story is ready for implementation. Start working on it."
 
-   - **InProgress**: "This story is being worked on. Use `/storyflow:complete-story <key>` when done."
+   - **InProgress**: "This story is being worked on. Use the `transition-story` MCP tool with transition `complete` when done."
 
    - **Done**: "This story has been completed."
 

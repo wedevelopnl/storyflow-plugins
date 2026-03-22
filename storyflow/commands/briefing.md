@@ -74,7 +74,7 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
    - **InProgress**: "This briefing is in progress, assigned to [architect name]."
      - "View a story: `/storyflow:story <key>`"
      - "Generate/update implementation plan: `/storyflow:implement-briefing [id]`"
-     - "Mark a story as done: `/storyflow:complete-story <key>`"
+     - "Mark a story as done: use the `transition-story` MCP tool with transition `complete`"
 
    - **Done**: "This briefing has been completed."
 
