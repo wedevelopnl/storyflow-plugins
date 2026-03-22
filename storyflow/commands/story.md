@@ -1,7 +1,7 @@
 ---
 name: storyflow-story
 description: Load full context for a specific story, including description, refinement data, and comments.
-allowed-tools: mcp__storyflow__get-story, Read
+allowed-tools: mcp__storyflow__get-story, mcp__storyflow__add-story-comment, Read
 ---
 
 # Load Story Context
@@ -16,30 +16,55 @@ If no ID is provided, ask the user for one. Suggest loading a briefing first wit
 
 ## Process
 
-1. **Load project context**: Read `.storyflow/config.json`.
-   - If file exists: extract `customer_name`, `asset_name`, `customer_id`, `asset_id` for context.
-   - If file does not exist: continue without context. Suggest running `/storyflow:setup` for a better experience.
+1. **Load project context** (required): Read `.storyflow/config.json` to get `customer_name`, `asset_name`, `customer_id`, `asset_id`.
+   - If the file does not exist: tell the user to run `/storyflow:setup` first. Do not proceed without config.
 
 2. **Fetch story**: Call `mcp__storyflow__get-story` with the provided ID.
 
-3. **Display story details** (if config was loaded, include asset context in the header):
+3. **Display story dashboard**:
+
+   If the story's asset does not match `asset_name` from config, show a warning.
+
    ```
-   # Story: [Title]
-   Status: [status] | Briefing: [briefing title] | Asset: [asset_name or from story data] | Priority: [priority]
-   Complexity: [complexity]
+   # Story: [Key] - [Title]
+   Status: [status] | Priority: [priority] | Price: [price or "not priced"]
+   Asset: [asset] | Project: [project] | Briefing: [briefing key]
+   Created: [date] | Updated: [date]
 
    ## Description
-   [story description]
+   [Full user story with acceptance criteria as returned by get-story]
 
-   ## Refinement Data
-   [If available: functional requirements, technical notes, acceptance criteria]
+   ## Refinement
+   Complexity: [complexity] | Risk: [risk]
 
-   ## Comments
-   [List recent comments with author and date]
+   ### Analysis
+   [The refinement report - this is a detailed implementation analysis,
+    not a list of acceptance criteria]
+
+   ### Concerns
+   [List concerns with their severity level: WARNING or INFO]
    ```
 
-4. **Suggest next steps** based on story status:
-   - **Accepted**: "This story is ready for implementation. Start working on it."
-   - **InProgress**: "This story is being worked on. Use `/storyflow:complete-story <id>` when done."
-   - **Done**: "This story is complete."
-   - **Other**: Describe what needs to happen next in the workflow.
+   If no refinement data exists, show: "This story has not been refined yet."
+
+4. **Status-aware next steps**:
+
+   - **Draft**: "This story is in draft. It needs to go through review and refinement."
+
+   - **InReview**: "This story is being reviewed."
+
+   - **NeedsClarification**: "This story needs clarification before it can proceed."
+
+   - **Refined**: "This story has been refined. Next step is pricing (quoting)."
+
+   - **Quoted**: "This story has been priced. It will move to todo when the briefing is claimed."
+
+   - **ToDo**: "This story is ready for implementation. Start working on it."
+
+   - **InProgress**: "This story is being worked on. Use `/storyflow:complete-story <key>` when done."
+
+   - **Done**: "This story has been completed."
+
+   - **Invoiced**: "This story has been invoiced."
+
+   - **Cancelled**: "This story has been cancelled."

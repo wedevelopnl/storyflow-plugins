@@ -16,17 +16,16 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
 ## Process
 
-1. **Load project context**: Read `.storyflow/config.json`.
-   - If file exists: extract `customer_name`, `asset_name`, `customer_id`, `asset_id` for context.
-   - If file does not exist: continue without context. Suggest running `/storyflow:setup` for a better experience.
+1. **Load project context** (required): Read `.storyflow/config.json` to get `customer_name`, `asset_name`, `customer_id`, `asset_id`.
+   - If the file does not exist: tell the user to run `/storyflow:setup` first. Do not proceed without config.
 
 2. **Fetch briefing**: Call `mcp__storyflow__get-briefing` with the provided ID to verify it exists and check its status.
 
-3. **Safety check**: If config was loaded, verify the briefing's customer and asset match the configured context. If they don't match, warn the user: "This briefing belongs to [customer]/[asset], but this project is configured for [customer_name]/[asset_name]. Are you sure you want to proceed?"
+3. **Safety check**: Verify the briefing's asset matches the configured asset. If they don't match, warn the user: "This briefing belongs to [briefing asset], but this project is configured for [asset_name]. Are you sure you want to proceed?"
 
 4. **Verify status**: The briefing must be in **Approved** status to be claimed.
    - If not Approved, inform the user of the current status and explain what needs to happen first.
-   - If Approved, proceed to step 3.
+   - If Approved, proceed to claim.
 
 5. **Confirm with user**: Before claiming, show:
    ```
@@ -34,7 +33,6 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
    Title: [title]
    Customer: [customer]
    Asset: [asset]
-   Stories: [count if known]
 
    This will transition the briefing to InProgress and assign you as the implementer.
    Proceed? (yes/no)
