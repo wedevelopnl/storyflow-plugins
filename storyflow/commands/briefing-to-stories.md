@@ -1,7 +1,7 @@
 ---
 name: storyflow-briefing-to-stories
-description: Generate user stories from an accepted briefing. Uses the codebase-analyzer agent for analysis, write-story skill for guidelines, and create-story MCP tool for saving.
-allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__create-story, Read, Glob, Grep, Bash, Agent
+description: Generate user stories from an accepted briefing. Uses the codebase-analyzer agent for analysis, write-story skill for guidelines, and create-briefing-stories MCP tool for saving.
+allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__create-briefing-stories, mcp__storyflow__transition-briefing, Read, Glob, Grep, Bash, Agent
 ---
 
 # Briefing to Stories
@@ -22,9 +22,8 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
 ### 0. Load project context
 
-Read `.storyflow/config.json`.
-- If file exists: extract `customer_name`, `asset_name`, `customer_id`, `asset_id` for context.
-- If file does not exist: suggest running `/storyflow:setup` for a better experience. Continue without context.
+Read `.storyflow/config.json` to get `customer_name`, `asset_name`, `customer_id`, `asset_id`.
+- If the file does not exist: tell the user to run `/storyflow:setup` first. Do not proceed without config.
 
 ### 1. Load briefing
 
@@ -109,7 +108,9 @@ Present ALL stories as a set for review:
 ```
 ## Stories for: [briefing title]
 
-### 1. [Story title] (Complexity: M, Priority: medium)
+### Epic: [epic title]
+
+#### 1. [Story title] (Complexity: M, Priority: medium)
 
 **As a** [persona]
 **I want to** [action]
@@ -123,7 +124,13 @@ Present ALL stories as a set for review:
 
 ---
 
-### 2. [Story title] ...
+#### 2. [Story title] ...
+
+---
+
+### Standalone Stories
+
+#### 3. [Story title] ...
 
 ---
 
@@ -136,23 +143,34 @@ Iterate until the architect approves.
 
 ### 6. Save stories
 
-For each approved story, call `mcp__storyflow__create-story` with:
-- `briefingId`: the briefing ID
-- `title`: story title
-- `description`: full markdown description
-- `priority`: low/medium/high
+Call `mcp__storyflow__create-briefing-stories` with the briefing ID and a JSON `data` string containing the approved stories structured as:
 
-Report each result as it comes back. If a story fails to save, continue with the remaining stories and report the failure at the end.
+```json
+{
+  "epics": [
+    {
+      "title": "Epic title",
+      "description": "Optional epic description",
+      "stories": [
+        { "title": "Story title", "description": "Full markdown description", "complexity": "M", "priority": "medium" }
+      ]
+    }
+  ],
+  "standaloneStories": [
+    { "title": "Story title", "description": "Full markdown description", "complexity": "L", "priority": "high" }
+  ]
+}
+```
 
-**Note:** Epic grouping is shown in the plan for context but is not persisted in this version. Complexity is shown for the architect's benefit but is not stored (set during refinement phase).
+This creates all stories and epics in one call, preserving the epic grouping.
 
 ### 7. Transition briefing to Scoped
 
-After all stories are created, transition the briefing from Accepted to Scoped:
+After stories are created, transition the briefing from Accepted to Scoped:
 
 Call `mcp__storyflow__transition-briefing` with:
 - `briefingId`: the briefing ID
-- `action`: `scope`
+- `transition`: `scope`
 
 This signals that scoping is complete and the briefing is ready for refinement.
 
@@ -161,15 +179,19 @@ This signals that scoping is complete and the briefing is ready for refinement.
 ```
 Stories created:
 
-- ACME-ST-1: [title]
-- ACME-ST-2: [title]
-- ACME-ST-3: [title]
+Epic: [epic title]
+  - [KEY]-ST-1: [title]
+  - [KEY]-ST-2: [title]
+
+Standalone:
+  - [KEY]-ST-3: [title]
+
 [if any failed: "Failed: [title] - [error message]"]
 
 Total: [X] stories created for briefing [key].
 Briefing transitioned to Scoped.
 
 Next steps:
+- Use `/storyflow:refine-briefing <id>` to run multi-agent refinement on all stories
 - Use `/storyflow:briefing <id>` to review the briefing with its new stories
-- Use `/storyflow:implement-briefing <id>` to generate an implementation plan
 ```
