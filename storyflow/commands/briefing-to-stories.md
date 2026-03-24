@@ -170,7 +170,7 @@ After stories are created, transition the briefing from Accepted to Scoped:
 
 Call `mcp__storyflow__transition-briefing` with:
 - `briefingId`: the briefing ID
-- `transition`: `scope`
+- `transition`: `scoped`
 
 This signals that scoping is complete and the briefing is ready for refinement.
 

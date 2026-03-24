@@ -64,4 +64,4 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
 9. **Suggest next steps**:
    - If stories are in `in_review` status: "Transition refined stories to `refined` status using `mcp__storyflow__transition-story` with action `complete-refinement`."
-   - If all stories have been refined: "The briefing is ready for the next phase. Use `mcp__storyflow__transition-briefing` with action `refine` to mark the briefing as refined."
+   - If all stories have been refined: "The briefing is ready for the next phase. Use `mcp__storyflow__transition-briefing` with action `refined` to mark the briefing as refined."
