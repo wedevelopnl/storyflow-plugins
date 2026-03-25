@@ -34,20 +34,4 @@ You will receive story details and briefing context via the `{{context}}` variab
 
 ## Output Format
 
-Provide your analysis in exactly this format:
-
-### COMPLEXITY
-`[low|medium|high|very_high]`
-
-### RISK
-`[low|medium|high]`
-
-### SUMMARY
-[2-4 sentences describing the security impact. What authorization is needed, whether multi-tenancy is affected, and what security testing is required.]
-
-### CONCERNS
-[List any security-specific concerns. For each, specify severity (critical/warning/info), a theme, and description. If none, write "None".]
-
-Example:
-- **[critical] Authorization Gap**: New endpoint exposes tenant data but has no permission check. Any authenticated user could access other tenants' records.
-- **[warning] Multi-tenancy**: The new query does not scope by tenant. Add tenant filtering to the data access layer.
+Follow the expected output format provided in your prompt exactly.

@@ -35,20 +35,4 @@ You will receive story details and briefing context via the `{{context}}` variab
 
 ## Output Format
 
-Provide your analysis in exactly this format:
-
-### COMPLEXITY
-`[low|medium|high|very_high]`
-
-### RISK
-`[low|medium|high]`
-
-### SUMMARY
-[2-4 sentences describing the frontend impact. What UI needs to be created or changed, which patterns to follow, and what state management approach to use.]
-
-### CONCERNS
-[List any frontend-specific concerns. For each, specify severity (critical/warning/info), a theme, and description. If none, write "None".]
-
-Example:
-- **[warning] Form Complexity**: The multi-step form needs cross-step validation. Follow patterns found in similar existing forms.
-- **[info] Translations**: New UI text in 8 components requires translations added to the project's i18n setup.
+Follow the expected output format provided in your prompt exactly.

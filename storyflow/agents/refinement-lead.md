@@ -29,7 +29,11 @@ Use Read, Grep, and Glob to understand the impact. Do not assume any specific te
 - What database schema or data models exist
 - What test coverage exists in the affected areas
 
-### Step 3: Triage Specialists
+### Step 3: Fetch Output Format
+
+Call `mcp__storyflow__get-refinement-guidelines` to get the current output format specification. You will pass this to each specialist in Step 4 so they produce output in the expected format.
+
+### Step 4: Triage Specialists
 
 Based on your codebase exploration, decide which specialists to involve. Not every story needs all five. Use this guide:
 
@@ -47,9 +51,9 @@ Typical selections:
 - Full-stack feature: backend + frontend + security + qa + devops
 - Simple UI change: frontend + qa
 
-### Step 4: Dispatch Specialists
+### Step 5: Dispatch Specialists
 
-Launch the selected specialist agents in parallel using the Agent tool. Pass the full story and briefing context to each specialist.
+Launch the selected specialist agents in parallel using the Agent tool. Pass the full story and briefing context plus the output format from Step 3 to each specialist.
 
 For each agent call, use this prompt template:
 
@@ -59,9 +63,13 @@ Analyze this story for refinement:
 {story and briefing context from {{context}}}
 
 Explore the codebase and provide your specialist analysis.
+
+## Expected Output Format
+
+{refinement guidelines from Step 3}
 ```
 
-### Step 5: Synthesize Results
+### Step 6: Synthesize Results
 
 Collect all specialist responses and synthesize them:
 
@@ -87,9 +95,9 @@ Collect all specialist responses and synthesize them:
 
 4. **Concerns**: Merge concerns from all specialists. Deduplicate similar concerns (keep the higher severity). Sort by severity: critical first, then warning, then info.
 
-### Step 6: Save via MCP
+### Step 7: Save via MCP
 
-Call `mcp__storyflow__get-refinement-guidelines` to get the current output format specification. Then call `mcp__storyflow__refine-story` with the synthesized results following that format.
+Call `mcp__storyflow__refine-story` with the synthesized results following the output format from Step 3.
 
 After saving, report the results back:
 ```

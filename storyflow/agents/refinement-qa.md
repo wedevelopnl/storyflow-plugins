@@ -34,20 +34,4 @@ You will receive story details and briefing context via the `{{context}}` variab
 
 ## Output Format
 
-Provide your analysis in exactly this format:
-
-### COMPLEXITY
-`[low|medium|high|very_high]`
-
-### RISK
-`[low|medium|high]`
-
-### SUMMARY
-[2-4 sentences describing the QA impact. What testing strategy is needed, what areas are at risk of regression, and whether the acceptance criteria are sufficient.]
-
-### CONCERNS
-[List any QA-specific concerns. For each, specify severity (critical/warning/info), a theme, and description. If none, write "None".]
-
-Example:
-- **[warning] Missing Edge Case**: Acceptance criteria do not cover the scenario where the user has no existing data. Add an empty state scenario.
-- **[info] Regression Risk**: The change modifies the shared DataGrid component. Verify that existing list views still render correctly.
+Follow the expected output format provided in your prompt exactly.

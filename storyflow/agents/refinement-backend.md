@@ -34,20 +34,4 @@ You will receive story details and briefing context via the `{{context}}` variab
 
 ## Output Format
 
-Provide your analysis in exactly this format:
-
-### COMPLEXITY
-`[low|medium|high|very_high]`
-
-### RISK
-`[low|medium|high]`
-
-### SUMMARY
-[2-4 sentences describing the backend impact. What needs to change, which layers are affected, and what patterns to follow.]
-
-### CONCERNS
-[List any backend-specific concerns. For each, specify severity (critical/warning/info), a theme, and description. If none, write "None".]
-
-Example:
-- **[warning] Data Migration**: Adding a required field to an existing entity. Existing records need a default value or backfill migration.
-- **[info] Query Performance**: The new list endpoint joins three tables. Add an index on the foreign key column.
+Follow the expected output format provided in your prompt exactly.

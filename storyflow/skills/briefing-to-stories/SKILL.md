@@ -2,7 +2,7 @@
 name: Convert Briefing to Stories
 description: "Generate user stories from an accepted briefing. Uses codebase-analyzer agent for analysis, MCP guidelines for format, and creates stories in epics or standalone groups. Includes a two-phase review (story plan, then full stories) before saving."
 disable-model-invocation: true
-allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__create-briefing-stories, mcp__storyflow__transition-briefing, mcp__storyflow__get-story-guidelines, Read, Glob, Grep, Bash, Agent
+allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__create-briefing-stories, mcp__storyflow__transition-briefing, mcp__storyflow__get-story-guidelines, mcp__storyflow__get-briefing-to-stories-guidelines, Read, Glob, Grep, Bash, Agent
 argument-hint: "<briefing-id>"
 ---
 
@@ -12,7 +12,11 @@ Generate user stories from an accepted briefing.
 
 ## Guidelines
 
-Before writing stories in step 5, call `mcp__storyflow__get-story-guidelines` to fetch current story writing guidelines. Follow the returned guidelines strictly for story format, language guardrails, complexity sizing, priority assessment, and acceptance criteria.
+Before creating the story plan in step 4, fetch both sets of guidelines:
+1. Call `mcp__storyflow__get-briefing-to-stories-guidelines` for the conversion methodology (analysis, grouping, epic organization, review criteria).
+2. Call `mcp__storyflow__get-story-guidelines` for individual story format (language guardrails, acceptance criteria, complexity sizing, priority).
+
+Follow both sets of guidelines strictly throughout the process.
 
 ## Arguments
 
@@ -83,20 +87,13 @@ Review this plan. You can:
 - Say "approved" to proceed to writing full stories
 ```
 
-**Guidelines for the plan:**
-- Group by user journeys, not technical components
-- Only create an epic if it will contain 3+ related stories
-- Target 3-7 stories per epic
-- Every story must describe end-user value
-- If more than 40% are high priority, reconsider
+Apply the briefing-to-stories guidelines (fetched in the Guidelines step) for grouping, epic organization, count guidance, and priority distribution.
 
 Iterate until the architect approves the plan.
 
 ### 5. Write stories (phase 2 review)
 
-Call `mcp__storyflow__get-story-guidelines` if not already called. Follow the returned guidelines for each story.
-
-For each story in the approved plan, write the full description following the guidelines format:
+For each story in the approved plan, write the full description following the story writing guidelines (fetched in the Guidelines step):
 - User story (As a / I want / So that)
 - Business context
 - Acceptance criteria (Given/When/Then scenarios)

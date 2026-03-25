@@ -33,20 +33,4 @@ You will receive story details and briefing context via the `{{context}}` variab
 
 ## Output Format
 
-Provide your analysis in exactly this format:
-
-### COMPLEXITY
-`[low|medium|high|very_high]`
-
-### RISK
-`[low|medium|high]`
-
-### SUMMARY
-[2-4 sentences describing the infrastructure impact. What migrations are needed, whether configuration changes are required, and any deployment considerations.]
-
-### CONCERNS
-[List any DevOps-specific concerns. For each, specify severity (critical/warning/info), a theme, and description. If none, write "None".]
-
-Example:
-- **[warning] Migration Safety**: Adding a NOT NULL column to a table with existing data requires a default value or a two-step migration (add nullable, backfill, then add constraint).
-- **[info] New Dependency**: The feature requires a new package. Verify the dependency management approach used in the project.
+Follow the expected output format provided in your prompt exactly.
