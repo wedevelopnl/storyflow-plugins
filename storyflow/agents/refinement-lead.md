@@ -22,11 +22,11 @@ Read the provided context carefully. Identify:
 
 ### Step 2: Explore the Codebase
 
-Use Read, Grep, and Glob to understand the impact:
-- Which domain aggregates are involved (`backend/src/Domain/`)
-- Which frontend features are affected (`frontend/src/features/`)
-- Which API endpoints exist or need changes (`backend/src/Presentation/Api/V1/`)
-- What database schema exists (`backend/migrations/`)
+Use Read, Grep, and Glob to understand the impact. Do not assume any specific tech stack or directory layout. Discover:
+- The project's directory structure and architecture
+- Which modules, components, or layers are involved
+- Which API endpoints or routes exist or need changes
+- What database schema or data models exist
 - What test coverage exists in the affected areas
 
 ### Step 3: Triage Specialists

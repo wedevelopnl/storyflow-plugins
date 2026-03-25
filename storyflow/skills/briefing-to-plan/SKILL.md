@@ -90,19 +90,19 @@ Generate plans compatible with `/implement-plan`. Use this template:
 
 - **Include story IDs**: Every phase should reference which story IDs it covers, enabling tracking
 - **Be specific about files**: List exact file paths based on codebase exploration, not guesses
-- **Match existing patterns**: The plan should follow patterns found in the codebase (DDD structure, feature folders, etc.)
+- **Match existing patterns**: The plan should follow patterns found in the codebase
 - **Test strategy per phase**: Each phase should be independently testable
 - **Keep phases small**: 2-4 stories per phase maximum. Each phase should be completable in one session.
 - **Note decisions**: Document any architectural decisions or trade-offs in the plan
 
 ## Codebase Exploration
 
-Before creating the plan, explore the codebase to understand:
+Before creating the plan, explore the codebase to understand its structure and conventions. Do not assume any specific tech stack or directory layout. Discover:
 
-- Existing domain structure (`backend/src/Domain/`)
-- Existing feature modules (`frontend/src/features/`)
-- Similar features already implemented (patterns to follow)
-- Database migrations (existing schema)
-- API endpoints (existing controller patterns)
+- Project structure and architectural patterns
+- Existing feature implementations similar to what's being requested (patterns to follow)
+- Database schema and migration approach
+- API endpoints and routing conventions
+- Test structure and frameworks
 
 This exploration ensures the plan references real file paths and follows established conventions.
