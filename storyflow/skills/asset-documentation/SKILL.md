@@ -1,34 +1,56 @@
 ---
 name: Asset Documentation
-description: "This skill should be used when the user asks to generate, update, or refresh asset documentation (functional or technical) for a project linked to StoryFlow. Also relevant when asking about documenting an application, creating a functional overview, generating a technical landscape, or updating docs in StoryFlow."
+description: "Generate or update asset documentation (functional, technical, or both) from the current codebase and save it to StoryFlow. Fetches generation guidelines from StoryFlow via MCP, analyzes the codebase locally, and saves documentation back."
+disable-model-invocation: true
+allowed-tools: mcp__storyflow__get-asset-documentation, mcp__storyflow__update-asset-documentation, mcp__storyflow__get-asset-documentation-guidelines, mcp__storyflow__list-assets, Read, Glob, Grep, Bash, Agent, AskUserQuestion
+argument-hint: "[functional|technical|both]"
 ---
 
-# Asset Documentation via Claude Code
+# Asset Documentation
 
-Generate or update asset documentation directly from the current codebase, without ai-service token costs.
+Generate or update asset documentation from the current codebase and save it to StoryFlow.
 
-## When This Applies
+## Arguments
 
-- User asks to generate or update documentation for the current project
-- User mentions functional documentation, technical documentation, or technical landscape
-- User wants to refresh documentation after code changes
+Optional argument specifying documentation type: `functional`, `technical`, or `both` (default: `both`).
 
-## What To Do
+Examples:
+- `/storyflow:asset-documentation` (generates both types)
+- `/storyflow:asset-documentation functional`
+- `/storyflow:asset-documentation technical`
 
-Direct the user to the `/storyflow:update-docs` command:
+## Process
 
-- `/storyflow:update-docs` to generate both functional and technical documentation
-- `/storyflow:update-docs functional` for functional documentation only
-- `/storyflow:update-docs technical` for technical documentation only
+1. **Read config**: Read `.storyflow/config.json` to get the `asset_id`.
+   - If the file does not exist or has no `asset_id`, tell the user to run `/storyflow:setup` first and stop.
+   - Extract `asset_id` and `asset_name` from `project.asset_id` and `project.asset_name` in the JSON config.
 
-## Prerequisites
+2. **Get commit hash**: Run `git rev-parse HEAD` via Bash to get the current commit hash.
 
-The project must be linked to a StoryFlow asset via `/storyflow:setup` (which creates `.storyflow/config.json` with the `asset_id`).
+3. **Parse argument**: Determine which types to generate from the user's argument. Default to `both` if no argument provided.
 
-## How It Works
+4. **For each documentation type** (functional, technical, or both):
 
-1. The command reads the asset ID from `.storyflow/config.json`
-2. It fetches the generation prompt from the ai-service (same prompts used by the web UI)
-3. Claude Code analyzes the codebase locally (no repo clone needed)
-4. The generated documentation is saved to StoryFlow via MCP tools
-5. Documentation becomes visible in StoryFlow's asset documentation view
+   a. **Check existing docs**: Call `mcp__storyflow__get-asset-documentation` with the asset ID and type.
+      - Note the existing content and last commit hash (if any) for context.
+
+   b. **Get generation prompt**: Call `mcp__storyflow__get-asset-documentation-guidelines` with the type.
+      - This returns the same prompt instructions the ai-service uses internally.
+
+   c. **Generate documentation**: Using the prompt instructions from step (b), analyze the codebase thoroughly:
+      - Use Glob and Grep to explore the project structure
+      - Read key files (README, config files, main entry points, route definitions, etc.)
+      - Use an Agent (subagent_type: "Explore") for deeper codebase exploration if needed
+      - Follow the prompt instructions to produce comprehensive markdown documentation
+      - If existing documentation was found in step (a), use it as a reference for what to update/improve
+
+   d. **Save documentation**: Call `mcp__storyflow__update-asset-documentation` with:
+      - `assetId`: from the config
+      - `type`: the documentation type
+      - `content`: the generated markdown
+      - `lastCommitHash`: from step 2
+
+5. **Report results**: Show the user:
+   - Which documentation types were generated/updated
+   - The commit hash it was generated from
+   - That the documentation is now visible in StoryFlow's asset documentation view

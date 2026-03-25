@@ -1,7 +1,7 @@
 ---
 name: refinement-lead
 description: Orchestrates story refinement by exploring the codebase, triaging which specialists are needed, dispatching them in parallel, and synthesizing results into a final refinement analysis saved via MCP.
-tools: ["Read", "Grep", "Glob", "Agent", "mcp__storyflow__refine-story", "mcp__storyflow__get-story", "mcp__storyflow__get-briefing"]
+tools: ["Read", "Grep", "Glob", "Agent", "mcp__storyflow__refine-story", "mcp__storyflow__get-story", "mcp__storyflow__get-briefing", "mcp__storyflow__get-refinement-guidelines"]
 model: sonnet
 ---
 
@@ -89,7 +89,7 @@ Collect all specialist responses and synthesize them:
 
 ### Step 6: Save via MCP
 
-Call `mcp__storyflow__refine-story` with the synthesized results. Reference the `refinement-output` skill for the exact parameter format.
+Call `mcp__storyflow__get-refinement-guidelines` to get the current output format specification. Then call `mcp__storyflow__refine-story` with the synthesized results following that format.
 
 After saving, report the results back:
 ```

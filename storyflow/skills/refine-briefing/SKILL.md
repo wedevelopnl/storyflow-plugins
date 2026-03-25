@@ -1,7 +1,9 @@
 ---
-name: storyflow-refine-briefing
-description: Refine all stories of a briefing with multi-agent analysis. Iterates through stories in review status, runs refinement on each, and provides a summary.
+name: Refine All Stories in a Briefing
+description: "Run multi-agent refinement analysis on all stories within a briefing. Filters stories by status (in_review by default), confirms scope with the user, then refines each story using the refinement-lead agent. Provides a summary table of results."
+disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__get-story, mcp__storyflow__transition-story, Read, Grep, Glob, Agent
+argument-hint: "<briefing-id>"
 ---
 
 # Refine All Stories in a Briefing
@@ -63,5 +65,5 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
    ```
 
 9. **Suggest next steps**:
-   - If stories are in `in_review` status: "Transition refined stories to `refined` status using `mcp__storyflow__transition-story` with action `complete-refinement`."
-   - If all stories have been refined: "The briefing is ready for the next phase. Use `mcp__storyflow__transition-briefing` with action `refined` to mark the briefing as refined."
+   - For each refined story, fetch its available transitions via `get-story` and suggest the appropriate next action
+   - Fetch the briefing again to check if new transitions are available after refinement, and suggest the next briefing-level action

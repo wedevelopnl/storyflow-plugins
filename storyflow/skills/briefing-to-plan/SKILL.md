@@ -1,15 +1,14 @@
 ---
 name: Briefing to Implementation Plan
-description: "This skill should be used when the user asks how to convert a briefing into an implementation plan, what structure a briefing-based plan should follow, how to sequence stories into phases, or what information to extract from briefing data for planning. For automated plan generation with codebase exploration, the briefing-planner agent is preferred (via /storyflow:implement-briefing). Also relevant when asking about plan templates, phase ordering, or story dependency mapping."
+description: "Reference guide for converting StoryFlow briefing data and stories into a structured implementation plan. Covers story sequencing strategy, plan template structure, dependency mapping, and codebase exploration guidance. Use when asking how to convert a briefing into a plan, what structure a plan should follow, or how to sequence stories into phases."
+user-invocable: false
 ---
 
 # Briefing to Implementation Plan
 
-Guides the conversion of StoryFlow briefing data and stories into a structured implementation plan compatible with the `/implement-plan` workflow.
+Guides the conversion of StoryFlow briefing data and stories into a structured implementation plan.
 
 For automated plan generation with codebase exploration, use the `briefing-planner` agent via `/storyflow:implement-briefing`. This skill provides the reference template and sequencing strategy for manual planning or understanding the plan format.
-
-For lifecycle and transition knowledge, see the `storyflow-workflow` skill.
 
 ## Reading Briefing Data
 
@@ -44,7 +43,7 @@ To sequence stories into implementation phases:
 
 ## Plan Template Structure
 
-Generate plans compatible with `/implement-plan`. Use this template:
+Use this template for implementation plans:
 
 ```markdown
 # Implementation Plan: [Briefing Title]
@@ -85,6 +84,25 @@ Generate plans compatible with `/implement-plan`. Use this template:
 - [ ] Security: authorization checks for new endpoints
 - [ ] Multi-tenancy: customer scoping for new entities
 ```
+
+## Story Dependency Mapping
+
+Before sequencing stories into phases, identify dependencies between them:
+
+### Identifying Dependencies
+- **Data dependencies**: Story B needs an entity/table created by Story A
+- **UI dependencies**: Story B needs a page or component built by Story A
+- **Business rule dependencies**: Story B's logic depends on rules established by Story A
+- **Integration dependencies**: Story B needs an API endpoint created by Story A
+
+### Documenting Dependencies
+Note dependencies in the plan's phase structure. If Story B depends on Story A, they should be in the same phase (A before B) or in sequential phases.
+
+### Foundation Stories
+Identify "foundation" stories that unlock multiple other stories. These should always be in Phase 1:
+- Stories that create new data models or entities
+- Stories that establish new API endpoints used by multiple features
+- Stories that set up infrastructure (auth, permissions, integrations)
 
 ## Best Practices
 

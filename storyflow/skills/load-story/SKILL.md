@@ -1,7 +1,8 @@
 ---
-name: storyflow-story
-description: Load full context for a specific story, including description, refinement data, and comments.
+name: Load Story Context
+description: "Fetch and display complete details for a specific story: description, acceptance criteria, refinement data (complexity, risk, report, concerns), comments, and status-aware next steps. Use when the user asks about a specific story or wants to see story details."
 allowed-tools: mcp__storyflow__get-story, mcp__storyflow__add-story-comment, Read
+argument-hint: "<story-id>"
 ---
 
 # Load Story Context
@@ -47,24 +48,14 @@ If no ID is provided, ask the user for one. Suggest loading a briefing first wit
 
    If no refinement data exists, show: "This story has not been refined yet."
 
-4. **Status-aware next steps**:
+4. **Available transitions and next steps**:
 
-   - **Draft**: "This story is in draft. It needs to go through review and refinement."
+   The `get-story` MCP response includes an "Available transitions" section listing what actions can be taken next, with transition names, labels, target statuses, and required data fields. Display these transitions as the next steps.
 
-   - **InReview**: "This story is being reviewed."
+   For each available transition, suggest the corresponding action:
+   - If a transition maps to a plugin skill (e.g., refinement, pricing), suggest the `/storyflow:` skill
+   - Otherwise, suggest using the `transition-story` MCP tool with the transition name
 
-   - **NeedsClarification**: "This story needs clarification before it can proceed."
+   If no transitions are available, the story is in a terminal state (Done, Invoiced, Cancelled).
 
-   - **Refined**: "This story has been refined. Next step is pricing (quoting)."
-
-   - **Quoted**: "This story has been priced. It will move to todo when the briefing is claimed."
-
-   - **ToDo**: "This story is ready for implementation. Start working on it."
-
-   - **InProgress**: "This story is being worked on. Use the `transition-story` MCP tool with transition `complete` when done."
-
-   - **Done**: "This story has been completed."
-
-   - **Invoiced**: "This story has been invoiced."
-
-   - **Cancelled**: "This story has been cancelled."
+   Always end with: "Use `/storyflow:briefing <key>` to see the full briefing context for this story."

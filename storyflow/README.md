@@ -48,30 +48,25 @@ Start Claude Code in your project directory and run:
 
 This links the current codebase to a specific customer and asset in StoryFlow.
 
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `/storyflow:briefings` | List briefings for the configured asset, grouped by status |
-| `/storyflow:briefing <id>` | Smart briefing dashboard with status-aware next steps |
-| `/storyflow:claim-briefing <id>` | Claim an approved briefing for implementation |
-| `/storyflow:briefing-to-stories <id>` | Generate user stories from an accepted briefing |
-| `/storyflow:implement-briefing <id>` | Generate an implementation plan from briefing and stories |
-| `/storyflow:story <id>` | Load individual story details |
-| `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
-| `/storyflow:refine-briefing <id>` | Refine all stories of a briefing with multi-agent analysis |
-| `/storyflow:update-docs [type]` | Generate or update asset documentation (`functional`, `technical`, or `both`) |
-| `/storyflow:setup` | Configure plugin for the current project |
-
 ## Skills
 
-Skills are loaded automatically when relevant context is detected:
+| Skill | Description |
+|-------|-------------|
+| `/storyflow:setup` | Configure plugin for the current project |
+| `/storyflow:briefings` | List briefings for the configured asset, grouped by status |
+| `/storyflow:briefing <id>` | Smart briefing dashboard with status-aware next steps |
+| `/storyflow:story <id>` | Load individual story details with refinement data |
+| `/storyflow:claim-briefing <id>` | Claim an approved briefing for implementation |
+| `/storyflow:briefing-to-stories <id>` | Generate user stories from an accepted briefing |
+| `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
+| `/storyflow:refine-briefing <id>` | Refine all stories of a briefing with multi-agent analysis |
+| `/storyflow:implement-briefing <id>` | Generate an implementation plan from briefing and stories |
+| `/storyflow:asset-documentation [type]` | Generate or update asset documentation (`functional`, `technical`, or `both`) |
 
-- **storyflow-workflow**: Triggers on briefing/story lifecycle questions. Provides knowledge about statuses, transitions, roles, and refinement.
-- **briefing-to-plan**: Triggers when converting briefings to implementation plans. Guides story sequencing and plan structure.
-- **write-story**: Triggers when writing user stories. Covers story format, language guardrails, acceptance criteria, complexity sizing, and priority assessment.
-- **refinement-output**: Defines the output structure for story refinement analysis (complexity, risk, report, concerns).
-- **asset-documentation**: Triggers when generating or updating asset documentation. Guides the documentation workflow.
+Note: `/storyflow:briefings`, `/storyflow:briefing`, and `/storyflow:story` are read-only and can also be auto-triggered by Claude when relevant context is detected.
+
+Domain knowledge (how to write stories, refinement output format) is served dynamically by the StoryFlow application via MCP guidelines calls (`get-story-guidelines`, `get-refinement-guidelines`, `get-asset-documentation-guidelines`). The `briefing-to-plan` reference skill provides plan structure and sequencing guidance locally.
+
 
 ## Agents
 
@@ -92,9 +87,19 @@ A typical session for a Software Architect:
 2. `/storyflow:briefing <id>` to review a specific briefing
 3. `/storyflow:claim-briefing <id>` to claim it
 4. `/storyflow:implement-briefing <id>` to generate an implementation plan
-5. `/implement-plan` to execute the plan (requires superpowers plugin)
+5. Execute the plan phase by phase
 6. Mark stories as done via the `transition-story` MCP tool
 
 ## How it works
 
 The plugin uses MCP (Model Context Protocol) to connect to the StoryFlow API. Authentication is handled via OAuth 2.1: Claude Code automatically manages the token lifecycle through the standard MCP OAuth flow. All communication goes through the MCP server bundled with the plugin.
+
+## Roadmap
+
+### Future Features
+
+- **Personal dashboard** (`/storyflow:my-work`): View all assigned stories across briefings (requires new MCP tool)
+- **Briefing chat** (`/storyflow:ask-briefing`): Ask clarifying questions to the Virtual PO from the terminal (requires new MCP endpoint)
+- **Bulk story transitions**: Mark multiple stories as done in one operation
+- **Automatic story status sync**: Transition stories based on git commit references
+- **Plan completion tracking**: Track implementation progress against the generated plan

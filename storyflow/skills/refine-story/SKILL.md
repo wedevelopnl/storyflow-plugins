@@ -1,7 +1,9 @@
 ---
-name: storyflow-refine-story
-description: Refine a single story with multi-agent analysis. Dispatches specialist agents to analyze the story from multiple perspectives and saves the combined refinement data.
+name: Refine a Single Story
+description: "Run multi-agent refinement analysis on a single story. Dispatches the refinement-lead agent to analyze complexity, risk, acceptance criteria, and potential concerns from multiple specialist perspectives. Saves results via the refine-story MCP tool."
+disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-story, mcp__storyflow__get-briefing, Read, Grep, Glob, Agent
+argument-hint: "<story-id>"
 ---
 
 # Refine a Single Story
@@ -62,5 +64,5 @@ If no ID is provided, ask the user for one. Suggest loading a briefing first wit
    ```
 
 8. **Suggest next steps**:
-   - If the story is in `in_review` status: "Use `mcp__storyflow__transition-story` with action `complete-refinement` to transition this story to refined."
+   - Fetch the story again via `get-story` and show the available transitions from the MCP response. Suggest using `transition-story` with the appropriate action.
    - If other stories in the same briefing need refinement: "Use `/storyflow:refine-briefing <briefing-id>` to refine all stories in the briefing."

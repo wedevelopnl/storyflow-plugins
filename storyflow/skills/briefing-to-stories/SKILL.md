@@ -1,16 +1,18 @@
 ---
-name: storyflow-briefing-to-stories
-description: Generate user stories from an accepted briefing. Uses the codebase-analyzer agent for analysis, write-story skill for guidelines, and create-briefing-stories MCP tool for saving.
-allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__create-briefing-stories, mcp__storyflow__transition-briefing, Read, Glob, Grep, Bash, Agent
+name: Convert Briefing to Stories
+description: "Generate user stories from an accepted briefing. Uses codebase-analyzer agent for analysis, MCP guidelines for format, and creates stories in epics or standalone groups. Includes a two-phase review (story plan, then full stories) before saving."
+disable-model-invocation: true
+allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__create-briefing-stories, mcp__storyflow__transition-briefing, mcp__storyflow__get-story-guidelines, Read, Glob, Grep, Bash, Agent
+argument-hint: "<briefing-id>"
 ---
 
 # Briefing to Stories
 
 Generate user stories from an accepted briefing.
 
-## Skills
+## Guidelines
 
-Load the `write-story` skill before writing stories in step 5. Follow its guidelines strictly for story format, language guardrails, complexity sizing, priority assessment, and acceptance criteria.
+Before writing stories in step 5, call `mcp__storyflow__get-story-guidelines` to fetch current story writing guidelines. Follow the returned guidelines strictly for story format, language guardrails, complexity sizing, priority assessment, and acceptance criteria.
 
 ## Arguments
 
@@ -29,11 +31,7 @@ Read `.storyflow/config.json` to get `customer_name`, `asset_name`, `customer_id
 
 Call `mcp__storyflow__get-briefing` with the provided ID.
 
-**Validate status**: The briefing MUST be in **Accepted** status. If not, inform the user:
-- Current status and what needs to happen to reach Accepted
-- Suggest `/storyflow:briefings` to find accepted briefings
-
-Stop here if not Accepted.
+**Validate eligibility**: Check the briefing's available transitions (included in the response). The `create-briefing-stories` MCP tool requires the briefing to be in a status that allows story creation. If this is not possible, inform the user of the current status and the available transitions instead. Stop here if story creation is not available.
 
 ### 2. Check existing stories
 
@@ -96,9 +94,9 @@ Iterate until the architect approves the plan.
 
 ### 5. Write stories (phase 2 review)
 
-The `write-story` skill should already be loaded (see Skills section above). Follow its guidelines for each story.
+Call `mcp__storyflow__get-story-guidelines` if not already called. Follow the returned guidelines for each story.
 
-For each story in the approved plan, write the full description following the skill's format:
+For each story in the approved plan, write the full description following the guidelines format:
 - User story (As a / I want / So that)
 - Business context
 - Acceptance criteria (Given/When/Then scenarios)
@@ -164,15 +162,9 @@ Call `mcp__storyflow__create-briefing-stories` with the briefing ID and a JSON `
 
 This creates all stories and epics in one call, preserving the epic grouping.
 
-### 7. Transition briefing to Scoped
+### 7. Transition briefing
 
-After stories are created, transition the briefing from Accepted to Scoped:
-
-Call `mcp__storyflow__transition-briefing` with:
-- `briefingId`: the briefing ID
-- `transition`: `scoped`
-
-This signals that scoping is complete and the briefing is ready for refinement.
+After stories are created, fetch the briefing again to check its available transitions. Apply the appropriate transition to advance the briefing to the next status (the MCP response will indicate which transition is available after story creation).
 
 ### 8. Report results
 
@@ -189,9 +181,9 @@ Standalone:
 [if any failed: "Failed: [title] - [error message]"]
 
 Total: [X] stories created for briefing [key].
-Briefing transitioned to Scoped.
+Briefing transitioned to [new status].
 
 Next steps:
-- Use `/storyflow:refine-briefing <id>` to run multi-agent refinement on all stories
+[Show available transitions from the briefing's current state]
 - Use `/storyflow:briefing <id>` to review the briefing with its new stories
 ```

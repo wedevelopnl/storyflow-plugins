@@ -1,7 +1,9 @@
 ---
-name: storyflow-setup
-description: Configure StoryFlow plugin for the current project. Links this project to a specific customer and asset in StoryFlow.
-allowed-tools: mcp__storyflow__get-current-user, mcp__storyflow__get-asset-by-url, mcp__storyflow__list-assets, Read, Write, Glob, AskUserQuestion, Bash(git remote get-url origin)
+name: StoryFlow Setup
+description: "Configure the StoryFlow plugin for the current project by linking it to a customer and asset. Guides authentication, asset auto-detection via Git URL, config file creation, and .gitignore verification. Use when setting up StoryFlow for the first time in a project."
+disable-model-invocation: true
+allowed-tools: mcp__storyflow__get-current-user, mcp__storyflow__get-asset-by-url, mcp__storyflow__list-assets, Read, Write, Glob, AskUserQuestion, Bash
+argument-hint: ""
 ---
 
 # StoryFlow Setup
@@ -29,7 +31,12 @@ Configure the StoryFlow plugin for this project by linking it to a customer and 
 
 3. **Manual asset selection** (only if auto-detect failed or user rejected the match): Call `list-assets` and present the available assets. Ask the user which asset this codebase represents. If none match, suggest they add the asset in StoryFlow first with the correct repository URL.
 
-4. **Create config file**: Create the `.storyflow/` directory if it doesn't exist, then write `.storyflow/config.json`:
+4. **Configure output directory**: Ask the user where StoryFlow should save generated files (implementation plans, etc.). Suggest `docs/storyflow/` as default.
+
+   - Present the default and let the user confirm or choose a different path
+   - The path is relative to the project root
+
+5. **Create config file**: Create the `.storyflow/` directory if it doesn't exist, then write `.storyflow/config.json`:
 
 ```json
 {
@@ -39,10 +46,11 @@ Configure the StoryFlow plugin for this project by linking it to a customer and 
     "customer_name": "<customer-name>",
     "asset_id": "<asset-uuid>",
     "asset_name": "<asset-name>"
-  }
+  },
+  "output_dir": "docs/storyflow"
 }
 ```
 
-5. **Verify .gitignore**: Read the project's `.gitignore` and check that `.storyflow/` is listed. If not, suggest adding it (the config contains project-specific IDs that should not be committed).
+6. **Verify .gitignore**: Read the project's `.gitignore` and check that `.storyflow/` is listed. If not, suggest adding it (the config contains project-specific IDs that should not be committed).
 
-6. **Confirm**: Tell the user setup is complete. Suggest starting a new session to see the SessionStart context, and using `/storyflow:briefings` to see available work.
+7. **Confirm**: Tell the user setup is complete. Suggest starting a new session to see the SessionStart context, and using `/storyflow:briefings` to see available work.

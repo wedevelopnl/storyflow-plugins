@@ -1,7 +1,9 @@
 ---
-name: storyflow-claim
-description: Claim an approved briefing for implementation. Transitions the briefing to InProgress and assigns you as the implementing Software Architect.
+name: Claim a Briefing
+description: "Claim an approved briefing to start implementing its stories. Transitions the briefing to InProgress and assigns you as the Software Architect. Includes asset matching validation and confirmation prompt."
+disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__claim-briefing, Read
+argument-hint: "<briefing-id>"
 ---
 
 # Claim a Briefing
@@ -23,9 +25,7 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
 3. **Safety check**: Verify the briefing's asset matches the configured asset. If they don't match, warn the user: "This briefing belongs to [briefing asset], but this project is configured for [asset_name]. Are you sure you want to proceed?"
 
-4. **Verify status**: The briefing must be in **Approved** status to be claimed.
-   - If not Approved, inform the user of the current status and explain what needs to happen first.
-   - If Approved, proceed to claim.
+4. **Verify claimability**: Check the briefing's available transitions (included in the `get-briefing` response). If `claim` is not listed as an available transition, inform the user of the current status and the available transitions instead.
 
 5. **Confirm with user**: Before claiming, show:
    ```
@@ -44,3 +44,12 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
    - "Briefing claimed successfully. You are now the assigned Software Architect."
    - "Next: Use `/storyflow:implement-briefing <id>` to generate an implementation plan."
    - "Or use `/storyflow:briefing <id>` to review the full context first."
+
+8. **Post-claim onboarding**: After successful claim, show a quick checklist:
+   ```
+   Briefing claimed! Here's your checklist:
+   - [ ] Review full briefing context: `/storyflow:briefing <id>`
+   - [ ] Review individual stories: `/storyflow:story <key>`
+   - [ ] Generate implementation plan: `/storyflow:implement-briefing <id>`
+   - [ ] Start implementing the plan
+   ```
