@@ -1,5 +1,5 @@
 ---
-name: StoryFlow Setup
+name: setup
 description: "Configure the StoryFlow plugin for the current project by linking it to a customer and asset. Guides authentication, asset auto-detection via Git URL, config file creation, and .gitignore verification. Use when setting up StoryFlow for the first time in a project."
 disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-current-user, mcp__storyflow__get-asset-by-url, mcp__storyflow__list-assets, Read, Write, Glob, AskUserQuestion, Bash

@@ -1,5 +1,5 @@
 ---
-name: Load Story Context
+name: load-story
 description: "Fetch and display complete details for a specific story: description, acceptance criteria, refinement data (complexity, risk, report, concerns), comments, and status-aware next steps. Use when the user asks about a specific story or wants to see story details."
 allowed-tools: mcp__storyflow__get-story, mcp__storyflow__add-story-comment, Read
 argument-hint: "<story-id>"

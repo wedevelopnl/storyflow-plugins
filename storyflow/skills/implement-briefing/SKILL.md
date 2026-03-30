@@ -1,5 +1,5 @@
 ---
-name: Generate Implementation Plan from Briefing
+name: implement-briefing
 description: "Generate a comprehensive implementation plan from a StoryFlow briefing. Loads briefing and all story details, launches the briefing-planner agent to explore the codebase and sequence stories into phases, saves the plan, and posts a comment on the briefing."
 disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__get-story, mcp__storyflow__add-briefing-comment, Read, Glob, Grep, Bash, Write, Agent

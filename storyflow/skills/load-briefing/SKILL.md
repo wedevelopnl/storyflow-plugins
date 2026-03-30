@@ -1,5 +1,5 @@
 ---
-name: Load Briefing Context
+name: load-briefing
 description: "Fetch and display a briefing as a smart dashboard with full context: stories, status, functional specification, conversation, and status-aware next steps. Use when the user asks about a specific briefing, wants briefing details, or needs to understand what a briefing contains."
 allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__add-briefing-comment, Read
 argument-hint: "<briefing-id>"

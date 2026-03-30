@@ -1,5 +1,5 @@
 ---
-name: Claim a Briefing
+name: claim-briefing
 description: "Claim an approved briefing to start implementing its stories. Transitions the briefing to InProgress and assigns you as the Software Architect. Includes asset matching validation and confirmation prompt."
 disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__claim-briefing, Read

@@ -1,5 +1,5 @@
 ---
-name: Refine All Stories in a Briefing
+name: refine-briefing
 description: "Run multi-agent refinement analysis on all stories within a briefing. Filters stories by status (in_review by default), confirms scope with the user, then refines each story using the refinement-lead agent. Provides a summary table of results."
 disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__get-story, mcp__storyflow__transition-story, Read, Grep, Glob, Agent

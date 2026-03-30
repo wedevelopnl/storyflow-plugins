@@ -1,5 +1,5 @@
 ---
-name: Refine a Single Story
+name: refine-story
 description: "Run multi-agent refinement analysis on a single story. Dispatches the refinement-lead agent to analyze complexity, risk, acceptance criteria, and potential concerns from multiple specialist perspectives. Saves results via the refine-story MCP tool."
 disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-story, mcp__storyflow__get-briefing, Read, Grep, Glob, Agent

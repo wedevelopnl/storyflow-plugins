@@ -1,5 +1,5 @@
 ---
-name: Asset Documentation
+name: asset-documentation
 description: "Generate or update asset documentation (functional, technical, or both) from the current codebase and save it to StoryFlow. Fetches generation guidelines from StoryFlow via MCP, analyzes the codebase locally, and saves documentation back."
 disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-asset-documentation, mcp__storyflow__update-asset-documentation, mcp__storyflow__get-asset-documentation-guidelines, mcp__storyflow__list-assets, Read, Glob, Grep, Bash, Agent, AskUserQuestion

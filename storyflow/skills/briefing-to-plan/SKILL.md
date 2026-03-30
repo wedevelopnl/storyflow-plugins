@@ -1,5 +1,5 @@
 ---
-name: Briefing to Implementation Plan
+name: briefing-to-plan
 description: "Reference guide for converting StoryFlow briefing data and stories into a structured implementation plan. Covers story sequencing strategy, plan template structure, dependency mapping, and codebase exploration guidance. Use when asking how to convert a briefing into a plan, what structure a plan should follow, or how to sequence stories into phases."
 user-invocable: false
 ---
