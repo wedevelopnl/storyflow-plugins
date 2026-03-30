@@ -56,6 +56,7 @@ This links the current codebase to a specific customer and asset in StoryFlow.
 | `/storyflow:briefings` | List briefings for the configured asset, grouped by status |
 | `/storyflow:briefing <id>` | Smart briefing dashboard with status-aware next steps |
 | `/storyflow:story <id>` | Load individual story details with refinement data |
+| `/storyflow:create-briefing [description]` | Create a new briefing from conversation context, plan files, or free text |
 | `/storyflow:claim-briefing <id>` | Claim an approved briefing for implementation |
 | `/storyflow:briefing-to-stories <id>` | Generate user stories from an accepted briefing |
 | `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
@@ -83,12 +84,19 @@ Domain knowledge (how to write stories, refinement output format) is served dyna
 
 A typical session for a Software Architect:
 
+**Working on existing briefings:**
 1. `/storyflow:briefings` to see available work
 2. `/storyflow:briefing <id>` to review a specific briefing
 3. `/storyflow:claim-briefing <id>` to claim it
 4. `/storyflow:implement-briefing <id>` to generate an implementation plan
 5. Execute the plan phase by phase
 6. Mark stories as done via the `transition-story` MCP tool
+
+**Creating new briefings from context:**
+1. Discuss a feature, plan, or requirement in your Claude Code session
+2. `/storyflow:create-briefing` to draft a briefing from the conversation
+3. Review, iterate, and upload to StoryFlow
+4. Share with the client for approval
 
 ## How it works
 
