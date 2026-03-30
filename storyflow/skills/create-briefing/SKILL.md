@@ -58,32 +58,15 @@ Only run the analysis if the user confirms. If yes, dispatch the `codebase-analy
 
 ### 4. Draft briefing
 
-Using the gathered context and guidelines, draft a complete briefing document.
+Using the gathered context, draft a complete briefing document following the document structure, language style, and quality criteria from the guidelines fetched in step 1.
 
-**Title selection**: Propose 2-3 concise title options and let the user choose before drafting the full document. Good titles are short, specific, and describe the feature from the user's perspective (e.g., "Invoice PDF Export", "Multi-language Support", "Customer Dashboard Redesign").
+**Title selection**: Before drafting the full document, propose 2-3 concise title options and let the user choose. Good titles are short, specific, and describe the feature from the user's perspective (e.g., "Invoice PDF Export", "Multi-language Support", "Customer Dashboard Redesign").
 
-**Document structure** (following the guidelines):
-
-- **Overview**: 2-3 sentence summary answering "What is being requested and why?"
-- **Context**: Background, current situation, what triggered the request
-- **User Roles**: Who are the primary users, different user types, who approves/reviews
-- **Requirements**: Functional requirements as user-visible behaviors, grouped logically, numbered
-- **Business Rules**: Validation, access, calculation, and timing rules
-- **Out of Scope**: What is explicitly NOT included
-
-Write in business language, not technical jargon. Describe WHAT is needed, not HOW to build it.
+Then draft all sections as defined in the guidelines.
 
 ### 5. Gap analysis
 
-Check the draft against the completeness checklist from the guidelines:
-
-1. **Scope is focused**: Does the briefing cover one coherent feature? If too broad, suggest splitting.
-2. **Requirements are testable**: Can each requirement be verified as done or not done?
-3. **User roles are identified**: Is it clear who benefits from each requirement?
-4. **Edge cases are considered**: What happens with empty data, errors, or unusual input?
-5. **No technical solutions prescribed**: Does the briefing describe needs, not implementations?
-
-For any gaps found, ask targeted questions to fill them. Do not ask about all gaps at once. Prioritize the most critical gaps first.
+Check the draft against the completeness checklist from the guidelines (fetched in step 1). For any gaps found, ask targeted questions to fill them. Do not ask about all gaps at once. Prioritize the most critical gaps first.
 
 ### 6. Final review
 
