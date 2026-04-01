@@ -73,12 +73,7 @@ Domain knowledge (how to write stories, refinement output format) is served dyna
 
 - **briefing-planner**: Dedicated agent that explores the local codebase and generates an implementation plan from briefing data. Invoked automatically by `/storyflow:implement-briefing`. Uses Opus for plan quality.
 - **codebase-analyzer**: Analyzes a codebase from a functional perspective to support story generation. Explores the current project to understand what the application offers and which workflows will be affected by the briefing.
-- **refinement-lead**: Orchestrates story refinement by triaging which specialists are needed, dispatching them in parallel, and synthesizing results into a final refinement analysis.
-- **refinement-backend**: Backend specialist analyzing API design, data models, domain logic, and database impact.
-- **refinement-frontend**: Frontend specialist analyzing UI components, state management, forms, and UX patterns.
-- **refinement-devops**: DevOps specialist analyzing migrations, configuration, deployment, and monitoring.
-- **refinement-qa**: QA specialist analyzing testability, edge cases, regression impact, and test coverage.
-- **refinement-security**: Security specialist analyzing authorization, multi-tenancy isolation, and data protection.
+Refinement agents have been removed. Refinement is now handled by the `refine-story` and `refine-briefing` skills, which fetch agent perspectives dynamically from the ai-service via the `get-refinement-guidelines` MCP tool. This ensures the plugin uses the same scoring, synthesis, and agent prompts as the in-app refinement system.
 
 ## Workflow
 

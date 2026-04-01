@@ -1,8 +1,8 @@
 ---
 name: refine-briefing
-description: "Run multi-agent refinement analysis on all stories within a briefing. Filters stories by status (in_review by default), confirms scope with the user, then refines each story using the refinement-lead agent. Provides a summary table of results."
+description: "Run multi-agent refinement analysis on all stories within a briefing. Filters stories by status (in_review by default), confirms scope with the user, then refines each story using parallel subagents per engineering perspective. Guidelines are fetched once from the ai-service and reused across all stories."
 disable-model-invocation: true
-allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__get-story, mcp__storyflow__transition-story, Read, Grep, Glob, Agent
+allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__get-briefing-stories, mcp__storyflow__get-story, mcp__storyflow__get-refinement-guidelines, mcp__storyflow__refine-story, mcp__storyflow__transition-story, Read, Grep, Glob, Agent
 argument-hint: "<briefing-id>"
 ---
 
@@ -45,25 +45,22 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
    If no stories match the filter, inform the user and suggest alternatives.
 
-7. **Refine each story**: For each story in the list:
-   - Build the context payload (story details + briefing description)
-   - Spawn the `refinement-lead` agent with the context
-   - The lead agent handles specialist triage, dispatch, synthesis, and saving via MCP
-   - Show progress: "Refining story [n]/[total]: [title]..."
+7. **Fetch refinement guidelines** (once): Call `mcp__storyflow__get-refinement-guidelines`. This returns the complete refinement context: output format, scoring approach, and all agent perspectives. These are the same prompts used by the in-app refinement system. Reuse this response for all stories.
 
-8. **Show summary table**: After all stories are refined:
+8. **Refine each story**: For each story, follow the refinement process from the `refine-story` skill (Steps 3-6): triage perspectives, dispatch parallel Explore subagents with agent prompts from the guidelines, synthesize, and save via MCP. Show progress: "Refining story [n]/[total]: [title]..."
+
+9. **Show summary table**: After all stories are refined:
    ```
    # Refinement Summary: [briefing title]
 
-   | Story | Complexity | Risk | Concerns |
-   |-------|-----------|------|----------|
-   | [title] | [complexity] | [risk] | [count] |
-   | [title] | [complexity] | [risk] | [count] |
+   | Story | Complexity | Risk | SP | Concerns |
+   |-------|-----------|------|----|----------|
+   | [title] | [complexity] | [risk] | [points] | [count] |
 
    Total: [count] stories refined
    Critical concerns: [count across all stories]
    ```
 
-9. **Suggest next steps**:
-   - For each refined story, fetch its available transitions via `get-story` and suggest the appropriate next action
-   - Fetch the briefing again to check if new transitions are available after refinement, and suggest the next briefing-level action
+10. **Suggest next steps**:
+    - For each refined story, fetch its available transitions via `get-story` and suggest the appropriate next action
+    - Fetch the briefing again to check if new transitions are available after refinement, and suggest the next briefing-level action
