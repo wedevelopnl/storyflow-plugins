@@ -18,49 +18,26 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
 ## Process
 
+### 1. Setup
+
 1. **Load project context**: Read `.storyflow/config.json`.
-   - If file exists: extract `customer_name`, `asset_name`, `customer_id`, `asset_id` for context.
-   - If file does not exist: continue without context. Suggest running `/storyflow:setup` for a better experience.
+   - If file does not exist: continue without. Suggest `/storyflow:setup`.
 
 2. **Fetch briefing**: Call `mcp__storyflow__get-briefing` with the provided ID.
 
-3. **Fetch stories**: Call `mcp__storyflow__get-briefing-stories` with the briefing ID.
+3. **Fetch stories**: Call `mcp__storyflow__get-briefing-stories`, then `mcp__storyflow__get-story` for each to get full details (parallel where possible).
 
-4. **Load story details**: For each story returned, call `mcp__storyflow__get-story` to get full details. Run these calls in parallel where possible.
+4. **Filter**: By default, select stories in `in_review` status. Include already-refined stories only if user explicitly requests re-refinement.
 
-5. **Filter stories**: By default, select stories in `in_review` status. If the user explicitly asked for re-refinement, also include stories that already have refinement data (any status with existing complexity/risk/report).
+### 2. Fetch Refinement Guidelines
 
-6. **Confirm scope**: Show the user what will be refined:
-   ```
-   # Briefing: [title]
-   Stories to refine: [count]
+Call `mcp__storyflow__get-refinement-guidelines` (once, reuse for all stories). This returns the complete refinement context including the Workflow section with batch refinement instructions.
 
-   | # | Story | Status | Existing Refinement |
-   |---|-------|--------|-------------------|
-   | 1 | [title] | [status] | [yes/no] |
-   | 2 | [title] | [status] | [yes/no] |
+### 3. Confirm scope, refine, report
 
-   Proceed with refinement? (yes/no)
-   ```
+Follow the Batch Refinement section from the guidelines Workflow:
 
-   If no stories match the filter, inform the user and suggest alternatives.
-
-7. **Fetch refinement guidelines** (once): Call `mcp__storyflow__get-refinement-guidelines`. This returns the complete refinement context: output format, scoring approach, and all agent perspectives. These are the same prompts used by the in-app refinement system. Reuse this response for all stories.
-
-8. **Refine each story**: For each story, follow the refinement process from the `refine-story` skill (Steps 3-6): triage perspectives, dispatch parallel Explore subagents with agent prompts from the guidelines, synthesize, and save via MCP. Show progress: "Refining story [n]/[total]: [title]..."
-
-9. **Show summary table**: After all stories are refined:
-   ```
-   # Refinement Summary: [briefing title]
-
-   | Story | Complexity | Risk | SP | Concerns |
-   |-------|-----------|------|----|----------|
-   | [title] | [complexity] | [risk] | [points] | [count] |
-
-   Total: [count] stories refined
-   Critical concerns: [count across all stories]
-   ```
-
-10. **Suggest next steps**:
-    - For each refined story, fetch its available transitions via `get-story` and suggest the appropriate next action
-    - Fetch the briefing again to check if new transitions are available after refinement, and suggest the next briefing-level action
+1. **Confirm scope**: Show stories to be refined, wait for confirmation
+2. **Refine each story**: Triage, dispatch, synthesize, save per the Workflow. Show progress.
+3. **Summary table**: Display all results
+4. **Next steps**: Fetch stories and briefing to suggest available transitions
