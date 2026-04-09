@@ -63,11 +63,10 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
    If no transitions are available, the briefing is in a terminal state.
 
-5. **Orthogonal flags**: The `get-briefing` response includes two flag fields that are independent of the workflow status:
+5. **Orthogonal flag**: The `get-briefing` response includes an `archivedAt` field that is independent of the workflow status:
 
-   - `clarificationPending`: true when one or more linked stories have an open question to the customer. Render it as a prominent note, e.g. "Clarification pending on N story/stories". Suggest `/storyflow:story <key>` to see which stories, or the `provide-story-clarification` MCP action when the answer is known.
    - `archivedAt`: when set, the briefing is soft-deleted. It should only appear in the current view if the user explicitly requested archived items. If the field is set, prepend "This briefing is archived" to the output.
 
-   These flags are toggled via dedicated MCP actions (`request-story-clarification`, `provide-story-clarification`, `archive-briefing`, `unarchive-briefing`) and are NOT workflow transitions. They do not appear in the "Available transitions" list.
+   The archive flag is toggled via dedicated MCP actions (`archive-briefing`, `unarchive-briefing`) and is NOT a workflow transition. It does not appear in the "Available transitions" list.
 
    Always end with: "Use `/storyflow:story <key>` to dive into a specific story's full details, acceptance criteria, and refinement analysis."

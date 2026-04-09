@@ -58,12 +58,11 @@ If no ID is provided, ask the user for one. Suggest loading a briefing first wit
 
    If no transitions are available, the story is in a terminal state (Done, Invoiced, Cancelled).
 
-5. **Orthogonal flags**:
+5. **Orthogonal flag**:
 
-   - `clarificationPending`: true when there is an open question to the customer on this story. Render as a note. Suggest the user resolve it via the `provide-story-clarification` MCP action when the answer is known, or ask the customer via another channel.
    - `archivedAt`: soft-delete flag. If set, prepend "This story is archived" to the output.
 
-   Clarification and archive are orthogonal actions, not workflow transitions. They do not appear in the "Available transitions" list; they are surfaced via separate MCP actions (`request-story-clarification`, `provide-story-clarification`, `archive-story`, `unarchive-story`).
+   The archive flag is an orthogonal action, not a workflow transition. It does not appear in the "Available transitions" list; it is surfaced via separate MCP actions (`archive-story`, `unarchive-story`).
 
 6. **Accept and Scope**: The feature story lifecycle includes two explicit agency commitment steps between `Submitted` and `Refined`:
 

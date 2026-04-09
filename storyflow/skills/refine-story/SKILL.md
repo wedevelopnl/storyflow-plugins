@@ -25,7 +25,7 @@ If no ID is provided, ask the user for one. Suggest loading a briefing first wit
 
 2. **Fetch story**: Call `mcp__storyflow__get-story` with the provided ID.
 
-   **Status pre-requisite**: A story is refineable only when it is in `Scoped` status. If the story is in `Submitted` or `Accepted`, advance it via the `accept` and `scope` transitions before refining. Clarification is an orthogonal flag (`clarificationPending`) and does not block refinement.
+   **Status pre-requisite**: A story is refineable only when it is in `Scoped` status. If the story is in `Submitted` or `Accepted`, advance it via the `accept` and `scope` transitions before refining.
 
 3. **Check existing refinement**: If the story already has refinement data, show existing summary and ask to re-refine. If user declines, stop.
 

@@ -18,7 +18,7 @@ Show briefings for the configured asset, highlighting what needs attention.
 
 3. **Display briefings**, grouped by status. The MCP response includes the status of each briefing and its available transitions. Group briefings by their status, ordered by actionability (briefings that need attention first). Skip empty groups.
 
-   A briefing is a "ready to claim" candidate when its status is `Accepted` and no architect is assigned yet. Briefings later in the lifecycle (`Scoped`, `Refined`, `Priced`, `ToDo`, `Doing`) are already being worked on (their status projects from the linked stories). Surface any briefing where the MCP response flags `clarificationPending` as true as needing attention, regardless of its workflow status.
+   A briefing is a "ready to claim" candidate when its status is `Accepted` and no architect is assigned yet. Briefings later in the lifecycle (`Scoped`, `Refined`, `Priced`, `ToDo`, `Doing`) are already being worked on (their status projects from the linked stories).
 
    ```
    # Briefings for [asset_name] ([customer_name])

@@ -27,8 +27,6 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
 4. **Verify claimability**: Check the briefing's available transitions (included in the `get-briefing` response). If `claim` is not listed as an available transition, inform the user of the current status and the available transitions instead.
 
-   If the `get-briefing` response flags `clarificationPending` as true, warn the user that there is an open question to the customer on one or more of the linked stories. The claim can still proceed, but they may want to resolve the clarification first via `provide-story-clarification`.
-
 5. **Confirm with user**: Before claiming, show:
    ```
    About to claim briefing:
