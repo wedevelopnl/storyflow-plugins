@@ -1,6 +1,6 @@
 ---
 name: claim-briefing
-description: "Claim an approved briefing to start implementing its stories. Transitions the briefing to InProgress and assigns you as the Software Architect. Includes asset matching validation and confirmation prompt."
+description: "Claim an accepted briefing to start implementing its stories. Assigns you as the Software Architect and pulls the briefing into your active workspace. Includes asset matching validation and confirmation prompt."
 disable-model-invocation: true
 allowed-tools: mcp__storyflow__get-briefing, mcp__storyflow__claim-briefing, Read
 argument-hint: "<briefing-id>"
@@ -8,7 +8,7 @@ argument-hint: "<briefing-id>"
 
 # Claim a Briefing
 
-Claim an approved briefing so you can start implementing its stories.
+Claim an accepted briefing so you can start implementing its stories. An accepted briefing is one where the agency has committed to the work and the stories have been generated. From `Accepted` onwards the briefing's workflow status is automatically projected from its linked stories, so claiming does not change the briefing's workflow status: it assigns you as the Software Architect and pulls the briefing into your active workspace.
 
 ## Arguments
 
@@ -27,6 +27,8 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
 4. **Verify claimability**: Check the briefing's available transitions (included in the `get-briefing` response). If `claim` is not listed as an available transition, inform the user of the current status and the available transitions instead.
 
+   If the `get-briefing` response flags `clarificationPending` as true, warn the user that there is an open question to the customer on one or more of the linked stories. The claim can still proceed, but they may want to resolve the clarification first via `provide-story-clarification`.
+
 5. **Confirm with user**: Before claiming, show:
    ```
    About to claim briefing:
@@ -34,7 +36,7 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
    Customer: [customer]
    Asset: [asset]
 
-   This will transition the briefing to InProgress and assign you as the implementer.
+   This assigns you as the implementer. The briefing status follows its stories automatically: once you start working on the first story (move it to Doing), the briefing projection reflects that.
    Proceed? (yes/no)
    ```
 
