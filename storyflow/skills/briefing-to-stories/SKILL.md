@@ -61,3 +61,5 @@ Follow the Workflow section from the guidelines:
 ### 7. Transition and report
 
 After stories are created, fetch the briefing again to check available transitions. Apply the appropriate transition to advance the briefing. Report results following the guidelines report format.
+
+**Note:** Stories generated from a briefing start in the `Accepted` status (not `Submitted`). The agency has committed to the work by generating the stories, so the commitment is implicit; the agency still needs to confirm the scope explicitly by moving each story to `Scoped` before refinement is allowed.

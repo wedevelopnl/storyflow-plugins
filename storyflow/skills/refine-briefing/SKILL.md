@@ -27,7 +27,7 @@ If no ID is provided, ask the user for one. Suggest running `/storyflow:briefing
 
 3. **Fetch stories**: Call `mcp__storyflow__get-briefing-stories`, then `mcp__storyflow__get-story` for each to get full details (parallel where possible).
 
-4. **Filter**: By default, select stories in `in_review` status. Include already-refined stories only if user explicitly requests re-refinement.
+4. **Filter**: By default, select stories in `Scoped` status (stories must have been accepted and scoped by the agency before refinement is allowed). Include already-refined stories only if the user explicitly requests re-refinement. If you encounter stories in `Submitted` or `Accepted`, advance them first via the `accept` and `scope` transitions; if refinement reveals missing scope, use `return-to-scoped` to move them back. Clarification is an orthogonal flag (`clarificationPending`) and does not block refinement.
 
 ### 2. Fetch Refinement Guidelines
 
