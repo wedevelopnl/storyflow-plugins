@@ -42,7 +42,7 @@ Call `mcp__storyflow__get-briefing-to-stories-guidelines` for the complete story
 Follow the guidelines strictly throughout the remaining steps. The guidelines contain:
 - Role and approach for story generation
 - Briefing-to-stories methodology (analysis, grouping, epic organization, review)
-- Story writing format (language guardrails, acceptance criteria, complexity, priority)
+- Story writing format (language guardrails, acceptance criteria, priority)
 - Analysis, generation, and review phases
 - Workflow with presentation formats, save structure, and report format
 
