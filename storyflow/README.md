@@ -5,9 +5,27 @@ Connect Claude Code to the StoryFlow platform so Software Architects can browse 
 ## What it does
 
 - **Browse briefings**: View available client briefings grouped by status directly in your terminal.
-- **Claim and implement**: Claim approved briefings and generate structured implementation plans from the stories they contain.
+- **Claim and implement**: Claim accepted briefings and generate structured implementation plans from the stories they contain.
 - **Load story context**: Pull individual story details into your session for reference while coding.
 - **Generate documentation**: Create or update functional and technical asset documentation from the current codebase.
+
+## Briefing lifecycle
+
+StoryFlow briefings and stories share a workflow-status lifecycle with two orthogonal flags.
+
+**Workflow status (projected from stories once the briefing is Accepted):**
+
+`Draft -> Submitted -> Accepted -> Scoped -> Refined -> Priced -> ToDo -> Doing -> Done`
+
+- Pre-Accepted steps (`Draft`, `Submitted`, `Accepted`) are driven by explicit briefing actions (customer submits, agency accepts).
+- From `Accepted` onwards the briefing status is projected from its linked stories using a min-wins rule with a `Doing` any-wins override. Moving stories forward (scope, refine, price, approve, start, complete) moves the briefing automatically; there are no separate briefing transitions for those steps.
+
+**Orthogonal flags (independent of workflow status):**
+
+- `clarificationPending`: a question is open to the customer. Set via `request-story-clarification` and cleared via `provide-story-clarification`. Can be toggled in any non-terminal status and does not block workflow transitions. The briefing projects the flag from its linked stories (any-wins).
+- `archivedAt`: soft-delete flag. Preserves the workflow status but hides the entity from default listings. Set via `archive-story` / `archive-briefing` from a terminal status, cleared via `unarchive-story` / `unarchive-briefing`.
+
+These flags are NOT workflow transitions. The MCP server exposes them as separate actions; the `load-briefing` and `load-story` skills surface them in their output alongside the workflow status.
 
 ## Requirements
 
@@ -57,7 +75,7 @@ This links the current codebase to a specific customer and asset in StoryFlow.
 | `/storyflow:briefing <id>` | Smart briefing dashboard with status-aware next steps |
 | `/storyflow:story <id>` | Load individual story details with refinement data |
 | `/storyflow:create-briefing [description]` | Create a new briefing from conversation context, plan files, or free text |
-| `/storyflow:claim-briefing <id>` | Claim an approved briefing for implementation |
+| `/storyflow:claim-briefing <id>` | Claim an accepted briefing for implementation |
 | `/storyflow:briefing-to-stories <id>` | Generate user stories from an accepted briefing |
 | `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
 | `/storyflow:refine-briefing <id>` | Refine all stories of a briefing with multi-agent analysis |
