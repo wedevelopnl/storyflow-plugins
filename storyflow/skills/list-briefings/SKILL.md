@@ -1,6 +1,6 @@
 ---
 name: list-briefings
-description: "Shows briefings for the configured asset, grouped by status. Highlights briefings ready to claim (Approved). Use when the user asks to see available work, list briefings, or check what needs attention."
+description: "Shows briefings for the configured asset, grouped by status. Highlights briefings ready to claim (Accepted). Use when the user asks to see available work, list briefings, or check what needs attention."
 allowed-tools: mcp__storyflow__list-briefings, Read
 argument-hint: ""
 ---
@@ -17,6 +17,8 @@ Show briefings for the configured asset, highlighting what needs attention.
 2. **Fetch briefings**: Call `mcp__storyflow__list-briefings` with `customerId` and `assetId` from config to get briefings for this specific asset.
 
 3. **Display briefings**, grouped by status. The MCP response includes the status of each briefing and its available transitions. Group briefings by their status, ordered by actionability (briefings that need attention first). Skip empty groups.
+
+   A briefing is a "ready to claim" candidate when its status is `Accepted` and no architect is assigned yet. Briefings later in the lifecycle (`Scoped`, `Refined`, `Priced`, `ToDo`, `Doing`) are already being worked on (their status projects from the linked stories). Surface any briefing where the MCP response flags `clarificationPending` as true as needing attention, regardless of its workflow status.
 
    ```
    # Briefings for [asset_name] ([customer_name])
