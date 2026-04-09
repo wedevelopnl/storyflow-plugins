@@ -58,4 +58,18 @@ If no ID is provided, ask the user for one. Suggest loading a briefing first wit
 
    If no transitions are available, the story is in a terminal state (Done, Invoiced, Cancelled).
 
+5. **Orthogonal flags**:
+
+   - `clarificationPending`: true when there is an open question to the customer on this story. Render as a note. Suggest the user resolve it via the `provide-story-clarification` MCP action when the answer is known, or ask the customer via another channel.
+   - `archivedAt`: soft-delete flag. If set, prepend "This story is archived" to the output.
+
+   Clarification and archive are orthogonal actions, not workflow transitions. They do not appear in the "Available transitions" list; they are surfaced via separate MCP actions (`request-story-clarification`, `provide-story-clarification`, `archive-story`, `unarchive-story`).
+
+6. **Accept and Scope**: The feature story lifecycle includes two explicit agency commitment steps between `Submitted` and `Refined`:
+
+   - `accept`: the agency commits to the story (`Submitted -> Accepted`)
+   - `scope`: the agency confirms the scope definition (`Accepted -> Scoped`)
+
+   Refinement (`refine`) now starts from `Scoped`, not `Submitted`. Briefing-generated stories start in `Accepted` (the agency has implicitly committed by generating them); the agency still needs to confirm the scope explicitly via `scope` before refinement is allowed. A story shown in `Accepted` or `Scoped` is waiting for the agency to advance it, not for the customer.
+
    Always end with: "Use `/storyflow:briefing <key>` to see the full briefing context for this story."
