@@ -1,5 +1,5 @@
 ---
-name: list-briefings
+name: briefings
 description: "Shows briefings for the configured asset, grouped by status. Highlights briefings ready to claim (Accepted). Use when the user asks to see available work, list briefings, or check what needs attention."
 allowed-tools: mcp__storyflow__list-briefings, Read
 argument-hint: ""

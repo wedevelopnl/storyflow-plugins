@@ -24,7 +24,7 @@ StoryFlow briefings and stories share a workflow-status lifecycle with one ortho
 
 - `archivedAt`: soft-delete flag. Preserves the workflow status but hides the entity from default listings. Set via `archive-story` / `archive-briefing` from a terminal status, cleared via `unarchive-story` / `unarchive-briefing`.
 
-The archive flag is NOT a workflow transition. The MCP server exposes it as a separate action; the `load-briefing` and `load-story` skills surface it in their output alongside the workflow status.
+The archive flag is NOT a workflow transition. The MCP server exposes it as a separate action; the `briefing` and `story` skills surface it in their output alongside the workflow status.
 
 ## Requirements
 
@@ -77,6 +77,7 @@ This links the current codebase to a specific customer and asset in StoryFlow.
 | `/storyflow:claim-briefing <id>` | Claim an accepted briefing for implementation |
 | `/storyflow:briefing-to-stories <id>` | Generate user stories from an accepted briefing |
 | `/storyflow:refine-story <id>` | Refine a single story with multi-agent analysis |
+| `/storyflow:price-story <id>` | Price a refined story using agency-specific pricing guidelines |
 | `/storyflow:refine-briefing <id>` | Refine all stories of a briefing with multi-agent analysis |
 | `/storyflow:implement-briefing <id>` | Generate an implementation plan from briefing and stories |
 | `/storyflow:asset-documentation [type]` | Generate or update asset documentation (`functional`, `technical`, or `both`) |

@@ -2,7 +2,7 @@
 name: create-briefing
 description: "Create a new briefing in StoryFlow from conversation context, plan files, or free text. Fetches guidelines, drafts a structured briefing document, iterates with the architect, and uploads after approval."
 disable-model-invocation: true
-allowed-tools: mcp__storyflow__get-briefing-guidelines, mcp__storyflow__create-briefing, mcp__storyflow__update-briefing, mcp__storyflow__get-briefing, Read, Glob, Grep, Bash, Agent, AskUserQuestion
+allowed-tools: mcp__storyflow__get-briefing-guidelines, mcp__storyflow__create-briefing, mcp__storyflow__get-briefing, Read, Glob, Grep, Bash, Agent, AskUserQuestion
 argument-hint: "[description or path to plan file]"
 ---
 
@@ -109,9 +109,8 @@ Iterate until the user says "upload" or equivalent confirmation.
 
 After the user approves:
 
-1. Call `mcp__storyflow__create-briefing` with `projectId`, `assetId`, and `title`
+1. Call `mcp__storyflow__create-briefing` with `projectId`, `assetId`, `title`, and `content` (the full document as markdown)
 2. Extract the briefing ID from the response
-3. Call `mcp__storyflow__update-briefing` with the briefing ID and the full document content as markdown
 
 ### 8. Verify and report
 

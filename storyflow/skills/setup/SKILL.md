@@ -31,10 +31,11 @@ Configure the StoryFlow plugin for this project by linking it to a customer and 
 
 3. **Manual asset selection** (only if auto-detect failed or user rejected the match): Call `list-assets` and present the available assets. Ask the user which asset this codebase represents. If none match, suggest they add the asset in StoryFlow first with the correct repository URL.
 
-4. **Configure output directory**: Ask the user where StoryFlow should save generated files (implementation plans, etc.). Suggest `docs/storyflow/` as default.
+4. **Configure output directory**: Use `AskUserQuestion` to ask where StoryFlow should save generated files (implementation plans, etc.). Suggest `docs/storyflow/` as default. **Wait for the user's response before proceeding.**
 
    - Present the default and let the user confirm or choose a different path
    - The path is relative to the project root
+   - Do NOT continue to step 5 until the user has responded
 
 5. **Create config file**: Create the `.storyflow/` directory if it doesn't exist, then write `.storyflow/config.json`:
 
